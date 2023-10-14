@@ -16,4 +16,17 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Pages\Employee\" />
+    <Folder Include="Pages\Bill\" />
+    <Folder Include="Pages\History\" />
+    <Folder Include="Pages\Scheduling\" />
+    <Folder Include="Pages\Service\" />
+    <Folder Include="Pages\Vehicle\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CarWashing.Shared\CarWashing.Shared.csproj" />
+  </ItemGroup>
+
 </Project>
