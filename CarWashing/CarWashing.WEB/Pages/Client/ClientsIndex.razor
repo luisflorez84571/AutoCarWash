@@ -1,0 +1,52 @@
+﻿@page "/clients"
+
+@inject IRepository repository
+
+<h3>CLiente</h3>
+
+<div class="mb-3">
+    <a class="btn btn-primary" href="/clients/create">Nuevo Cliente</a>
+</div>
+
+<GenericList MyList="Clients">
+
+    <Body>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Client</th>
+                    <th></th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var client in Clients!)
+                {
+                    <tr>
+                        <td>
+                            @client.Document
+                        </td>
+                        <td>
+                            <a class="btn btn-warning">Editar</a>
+                            <button class="btn btn-danger">Borrar</button>
+                        </td>
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </Body>
+
+</GenericList>
+
+@code {
+    public List<Client> Clients { get; set; }
+
+    protected async override Task OnInitializedAsync()
+    {
+        var responseHppt = await repository.Get<List<Client>>("/api/clients");
+        Clients = responseHppt.Response!;
+    }
+}
+

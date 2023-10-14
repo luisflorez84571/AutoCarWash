@@ -1,0 +1,30 @@
+﻿@page "/clients/create"
+@using CarWashing.Shared.Entities;
+@inject IRepository repository
+@inject NavigationManager navigationManager
+@inject SweetAlertService sweetAlertService
+
+<h3>Crear Cliente</h3>
+
+<ClientForm @ref="clientForm" Client="client" OnSubmit="Create" ReturnAction="Return" />
+
+@code {
+    private Client client = new();
+    private const string Uri = "/clients";
+    private ClientForm clientForm;
+
+    private async Task Create()
+    {
+        var responseHttp = await repository.Post("/api/clients", client);
+        if (responseHttp.Error)
+        {
+            var message = await responseHttp.GetErrorMessageAsync();
+            await sweetAlertService.FireAsync("Error", message);
+            return;
+        }
+        clientForm!.FormPostedSuccessfully = true;
+        navigationManager.NavigateTo("/clients");
+    }
+
+    private void Return() => navigationManager.NavigateTo(Uri);
+}

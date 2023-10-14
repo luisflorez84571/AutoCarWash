@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34202.233
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarWashing.API", "CarWashing.API\CarWashing.API.csproj", "{AA2B4C11-80D0-4FEF-AAF6-DBBE2F6E774D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarWashing.API", "CarWashing.API\CarWashing.API.csproj", "{AA2B4C11-80D0-4FEF-AAF6-DBBE2F6E774D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarWashing.WEB", "CarWashing.WEB\CarWashing.WEB.csproj", "{0A54069A-4D3C-4631-8886-48392EAC21EC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarWashing.WEB", "CarWashing.WEB\CarWashing.WEB.csproj", "{0A54069A-4D3C-4631-8886-48392EAC21EC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarWashing.Mobile", "CarWashing.Mobile\CarWashing.Mobile.csproj", "{51C86686-FB28-4E53-A1BE-16D47B8CF56A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarWashing.Mobile", "CarWashing.Mobile\CarWashing.Mobile.csproj", "{51C86686-FB28-4E53-A1BE-16D47B8CF56A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarWashing.Shared", "CarWashing.Shared\CarWashing.Shared.csproj", "{41C03D74-F582-458C-A3A8-A513D9DC069A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarWashing.Shared", "CarWashing.Shared\CarWashing.Shared.csproj", "{41C03D74-F582-458C-A3A8-A513D9DC069A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
