@@ -1,0 +1,30 @@
+﻿@page "/employees/create"
+@using CarWashing.Shared.Entities;
+@inject IRepository repository
+@inject NavigationManager navigationManager
+@inject SweetAlertService sweetAlertService
+
+<h3>Crear Empleado</h3>
+
+<EmployeeForm @ref="employeeForm" Employee="employee" OnSubmit="Create" ReturnAction="Return" />
+
+@code {
+    private Employee employee = new();
+    private const string Uri = "/employees";
+    private EmployeeForm employeeForm;
+
+    private async Task Create()
+    {
+        var responseHttp = await repository.Post("/api/employees", employee);
+        if (responseHttp.Error)
+        {
+            var message = await responseHttp.GetErrorMessageAsync();
+            await sweetAlertService.FireAsync("Error", message);
+            return;
+        }
+        employeeForm!.FormPostedSuccessfully = true;
+        navigationManager.NavigateTo("/employees");
+    }
+
+    private void Return() => navigationManager.NavigateTo(Uri);
+}

@@ -18,11 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Pages\Employee\" />
-    <Folder Include="Pages\Bill\" />
-    <Folder Include="Pages\History\" />
     <Folder Include="Pages\Scheduling\" />
-    <Folder Include="Pages\Service\" />
     <Folder Include="Pages\Vehicle\" />
   </ItemGroup>
 

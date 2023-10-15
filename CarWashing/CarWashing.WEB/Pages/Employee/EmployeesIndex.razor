@@ -1,0 +1,52 @@
+﻿@page "/employees"
+
+@inject IRepository repository
+
+<h3>Empleado</h3>
+
+<div class="mb-3">
+    <a class="btn btn-primary" href="/employees/create">Nuevo Employeee</a>
+</div>
+
+<GenericList MyList="Employees">
+
+    <Body>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Employee</th>
+                    <th></th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var employee in Employees!)
+                {
+                    <tr>
+                        <td>
+                            @employee.EmployeeId
+                        </td>
+                        <td>
+                            <a class="btn btn-warning">Editar</a>
+                            <button class="btn btn-danger">Borrar</button>
+                        </td>
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </Body>
+
+</GenericList>
+
+@code {
+    public List<Employee> Employees { get; set; }
+
+    protected async override Task OnInitializedAsync()
+    {
+        var responseHppt = await repository.Get<List<Employee>>("/api/employees");
+        Employees = responseHppt.Response!;
+    }
+}
+
