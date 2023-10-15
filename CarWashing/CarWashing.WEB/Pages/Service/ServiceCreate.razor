@@ -1,0 +1,30 @@
+﻿@page "/services/create"
+@using CarWashing.Shared.Entities;
+@inject IRepository repository
+@inject NavigationManager navigationManager
+@inject SweetAlertService sweetAlertService
+
+<h3>Crear Empleado</h3>
+
+<ServiceForm @ref="serviceForm" Service="service" OnSubmit="Create" ReturnAction="Return" />
+
+@code {
+    private Service service = new();
+    private const string Uri = "/services";
+    private ServiceForm serviceForm;
+
+    private async Task Create()
+    {
+        var responseHttp = await repository.Post("/api/services", service);
+        if (responseHttp.Error)
+        {
+            var message = await responseHttp.GetErrorMessageAsync();
+            await sweetAlertService.FireAsync("Error", message);
+            return;
+        }
+        serviceForm!.FormPostedSuccessfully = true;
+        navigationManager.NavigateTo("/services");
+    }
+
+    private void Return() => navigationManager.NavigateTo(Uri);
+}

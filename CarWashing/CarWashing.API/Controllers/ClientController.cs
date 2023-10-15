@@ -38,39 +38,56 @@ public class ClientController : ControllerBase
     public async Task<ActionResult<Client>> PostClient(Client client)
     {
         _context.Clients.Add(client);
-        await _context.SaveChangesAsync();
-
-        return CreatedAtAction("GetClient", new { id = client.ClientId }, client);
-    }
-
-    [HttpPut("{id}")]
-    public async Task<IActionResult> PutClient(int id, Client client)
-    {
-        if (id != client.ClientId)
-        {
-            return BadRequest();
-        }
-
-        _context.Entry(client).State = EntityState.Modified;
-
         try
         {
+
             await _context.SaveChangesAsync();
+            return Ok(client);
         }
-        catch (DbUpdateConcurrencyException)
+        catch (DbUpdateException dbUpdateException)
         {
-            if (!ClientExists(id))
+            if (dbUpdateException.InnerException!.Message.Contains("duplicate"))
             {
-                return NotFound();
+                return BadRequest("Ya existe un cliente con el mismo nombre.");
             }
             else
             {
-                throw;
+                return BadRequest(dbUpdateException.InnerException.Message);
             }
         }
+        catch (Exception exception)
+        {
+            return BadRequest(exception.Message);
+        }
 
-        return NoContent();
     }
+
+    [HttpPut]
+    public async Task<ActionResult> Put(Client client)
+    {
+        _context.Update(client);
+        try
+        {
+            await _context.SaveChangesAsync();
+            return Ok(client);
+        }
+        catch (DbUpdateException dbUpdateException)
+        {
+            if (dbUpdateException.InnerException!.Message.Contains("duplicate"))
+            {
+                return BadRequest("Ya existe un registro con el mismo nombre.");
+            }
+            else
+            {
+                return BadRequest(dbUpdateException.InnerException.Message);
+            }
+        }
+        catch (Exception exception)
+        {
+            return BadRequest(exception.Message);
+        }
+    }
+
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteClient(int id)

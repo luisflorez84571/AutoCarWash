@@ -5,10 +5,10 @@
 <EditForm EditContext="editContext" OnSubmit="OnSubmit">
     <DataAnnotationsValidator />
     <div class="mb-3">
-        <label>Cliente:</label>
+        <label>Empleado:</label>
         <div>
-            <InputText class="form-control" @bind-Value="@Client.FirstName" />
-            <ValidationMessage For="@(() => Client.ClientId)" />
+            <InputText class="form-control" @bind-Value="@Service.Servicio" />
+            <ValidationMessage For="@(() => Service.ServiceId)" />
         </div>
     </div>
 
@@ -23,14 +23,14 @@
 
     protected override void OnInitialized()
     {
-        editContext = new(Client);
+        editContext = new(Service);
 
     }
 
 
     [EditorRequired]
     [Parameter]
-    public Client Client { get; set; } = null!;
+    public Service Service { get; set; } = null!;
 
     [EditorRequired]
     [Parameter]
