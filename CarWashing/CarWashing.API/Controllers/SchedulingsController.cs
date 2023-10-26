@@ -3,13 +3,13 @@ using CarWashing.Shared.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-[Route("api/[controller]")]
+[Route("/api/chedulings")]
 [ApiController]
-public class SchedulingController : ControllerBase
+public class SchedulingsController : ControllerBase
 {
     private readonly DataContext _context;
 
-    public SchedulingController(DataContext context)
+    public SchedulingsController(DataContext context)
     {
         _context = context;
     }

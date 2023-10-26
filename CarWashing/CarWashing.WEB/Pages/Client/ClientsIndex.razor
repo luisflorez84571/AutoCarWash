@@ -53,7 +53,7 @@
 
     private async Task Load()
     {
-        var responseHppt = await repository.Get<List<Client>>("api/clients");
+        var responseHppt = await repository.Get<List<Client>>("/api/clients");
         Clients = responseHppt.Response!;
     }
 
@@ -74,7 +74,7 @@
             return;
         }
 
-        var responseHTTP = await repository.Delete($"api/clients/{client.ClientId}");
+        var responseHTTP = await repository.Delete($"/api/clients/{client.ClientId}");
 
         if (responseHTTP.Error)
         {

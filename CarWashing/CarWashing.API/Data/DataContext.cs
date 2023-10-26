@@ -10,8 +10,6 @@ namespace CarWashing.API.Data
 {
     public class DataContext : DbContext
     {
-        internal object employees;
-
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
 

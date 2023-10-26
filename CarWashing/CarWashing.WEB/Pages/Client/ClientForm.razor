@@ -5,11 +5,37 @@
 <EditForm EditContext="editContext" OnSubmit="OnSubmit">
     <DataAnnotationsValidator />
     <div class="mb-3">
-        <label>Cliente:</label>
+        <label>Nombres:</label>
         <div>
             <InputText class="form-control" @bind-Value="@Client.FirstName" />
-            <ValidationMessage For="@(() => Client.ClientId)" />
+            <ValidationMessage For="@(() => Client.FirstName)" />
         </div>
+        <br />
+        <label>Apellidos:</label>
+        <div>
+            <InputText class="form-control" @bind-Value="@Client.LastName" />
+            <ValidationMessage For="@(() => Client.LastName)" />
+        </div>
+        <br />
+        <label>Documento:</label>
+        <div>
+            <InputText class="form-control" @bind-Value="@Client.Document" />
+            <ValidationMessage For="@(() => Client.Document)" />
+        </div>
+        <br />
+        <label>Telefono:</label>
+        <div>
+            <InputText class="form-control" @bind-Value="@Client.Celphone" />
+            <ValidationMessage For="@(() => Client.Celphone)" />
+        </div>
+        <br />
+        
+        <label>Correo:</label>
+        <div>
+            <InputText class="form-control" @bind-Value="@Client.Mail" />
+            <ValidationMessage For="@(() => Client.Mail)" />
+        </div>
+        <br />
     </div>
 
     <button class="btn btn-primary" type="submit">Guardar Cambios</button>
