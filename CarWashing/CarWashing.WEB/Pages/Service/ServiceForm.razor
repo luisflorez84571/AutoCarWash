@@ -5,11 +5,27 @@
 <EditForm EditContext="editContext" OnSubmit="OnSubmit">
     <DataAnnotationsValidator />
     <div class="mb-3">
-        <label>Empleado:</label>
-        <div>
-            <InputText class="form-control" @bind-Value="@Service.Servicio" />
-            <ValidationMessage For="@(() => Service.ServiceId)" />
-        </div>
+        <h3>Tipo de Servicio:</h3>
+         <form>
+           <label for="Servicios">Servicios:</label>
+            <select id="Servicios" name="Servicios">
+                <option value="sencilla1">Lavada sencilla</option>
+                <option value="full2">Lavada full</option>
+                <option value="motor3">Lavada de Motor</option>
+                <option value="brillada4">Brillada</option>                
+            </select>
+        </form> 
+        <br />
+        <h3>Tipo de Vehiculo:</h3>
+        <form>
+            <label for="Vehiculo">Vehiculo:</label>
+            <select id="Vehiculo" name="Vehiculo">
+                <option value="Liviano1">Liviano</option>
+                <option value="Camioneta2">Camioneta</option>
+                <option value="Van3">Van</option>
+                <option value="Camion4">Camion</option>
+            </select>
+        </form>
     </div>
 
     <button class="btn btn-primary" type="submit">Guardar Cambios</button>

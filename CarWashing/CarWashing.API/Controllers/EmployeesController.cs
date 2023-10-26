@@ -3,13 +3,13 @@ using CarWashing.Shared.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-[Route("api/[controller]")]
+[Route("/api/employees")]
 [ApiController]
-public class EmployeeController : ControllerBase
+public class EmployeesController : ControllerBase
 {
     private readonly DataContext _context;
 
-    public EmployeeController(DataContext context)
+    public EmployeesController(DataContext context)
     {
         _context = context;
     }

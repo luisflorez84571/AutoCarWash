@@ -1,5 +1,6 @@
 ﻿
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace CarWashing.Shared.Entities
 {
@@ -33,7 +34,13 @@ namespace CarWashing.Shared.Entities
         public string Mail { get; set; } = null!;
 
         // Vehículos asociados al cliente
+
+        [JsonIgnore]
         public ICollection<Vehicle> Vehicles { get; set; }
+
+        [JsonIgnore]
         public ICollection<Bill> Bills { get; set; }
+        [JsonIgnore]
+        public ICollection<Client> Clients { get; set; }
     }
 }
