@@ -1,29 +1,29 @@
-﻿@page "/services/create"
+﻿@page "/vehicles/create"
 @using CarWashing.Shared.Entities;
 @inject IRepository repository
 @inject NavigationManager navigationManager
 @inject SweetAlertService sweetAlertService
 
-<h3>Crear Servicio</h3>
+<h3>Crear Vehiculo</h3>
 
-<ServiceForm @ref="serviceForm" Service="service" OnSubmit="Create" ReturnAction="Return" />
+<VehicleForm @ref="vehicleForm" Vehicle="vehicle" OnSubmit="Create" ReturnAction="Return" />
 
 @code {
-    private Service service = new();
-    private const string Uri = "/services";
-    private ServiceForm serviceForm;
+    private Vehicle vehicle = new();
+    private const string Uri = "/vehicles";
+    private VehicleForm vehicleForm;
 
     private async Task Create()
     {
-        var responseHttp = await repository.Post("/api/services", service);
+        var responseHttp = await repository.Post("/api/vehicles", vehicle);
         if (responseHttp.Error)
         {
             var message = await responseHttp.GetErrorMessageAsync();
             await sweetAlertService.FireAsync("Error", message);
             return;
         }
-        serviceForm!.FormPostedSuccessfully = true;
-        navigationManager.NavigateTo("/services");
+        vehicleForm!.FormPostedSuccessfully = true;
+        navigationManager.NavigateTo("/vehicles");
     }
 
     private void Return() => navigationManager.NavigateTo(Uri);

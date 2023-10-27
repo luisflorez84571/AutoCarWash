@@ -6,26 +6,139 @@
     <DataAnnotationsValidator />
     <div class="mb-3">
         <h3>Tipo de Servicio:</h3>
-         <form>
-           <label for="Servicios">Servicios:</label>
-            <select id="Servicios" name="Servicios">
-                <option value="sencilla1">Lavada sencilla</option>
-                <option value="full2">Lavada full</option>
-                <option value="motor3">Lavada de Motor</option>
-                <option value="brillada4">Brillada</option>                
-            </select>
-        </form> 
+        <InputSelect class="form-control" @bind-Value="@Service.Servicio">            
+            <option value=""></option>
+            <option value="sencilla">Lavada sencilla</option>
+            <option value="full">Lavada full</option>
+            <option value="motor">Lavada de motor</option>
+            <option value="brillada">Brillada</option>
+        </InputSelect>
         <br />
+        @if (!string.IsNullOrEmpty(Service.Servicio))
+        {
+            <p>Seleccionaste: @Service.Servicio</p>
+        }
+        else
+        {
+            <p>No has seleccionado un servicio</p>
+        }
+
         <h3>Tipo de Vehiculo:</h3>
-        <form>
-            <label for="Vehiculo">Vehiculo:</label>
-            <select id="Vehiculo" name="Vehiculo">
-                <option value="Liviano1">Liviano</option>
-                <option value="Camioneta2">Camioneta</option>
-                <option value="Van3">Van</option>
-                <option value="Camion4">Camion</option>
-            </select>
-        </form>
+        <InputSelect class="form-control" @bind-Value="@Service.Vehiculo">
+            <option value=""></option>
+            <option value="Liviano">Liviano</option>
+            <option value="Camioneta">Camioneta</option>
+            <option value="Van">Van</option>
+            <option value="Camion">Camion</option>
+        </InputSelect>        
+        <br />
+        @if (!string.IsNullOrEmpty(Service.Vehiculo))
+        {
+            <p>Seleccionaste: @Service.Vehiculo</p>
+        }
+        else
+        {
+            <p>No has seleccionado el tipo de vehiculo</p>
+        }
+        
+        <h3>El valor es: @Service.Precio</h3>
+
+        @code {
+            public int PrecioServicio()
+        {
+            string servicio = Service.Servicio;
+            string vehiculo = Service.Vehiculo;
+
+            if (!string.IsNullOrEmpty(servicio) && !string.IsNullOrEmpty(vehiculo))
+            {               
+                if (servicio == "sencilla")
+                {
+                    if (vehiculo == "Liviano")
+                    {
+                        Service.Precio = 10;
+                        
+                    }
+                    else if (vehiculo == "Camioneta")
+                    {
+                        Service.Precio = 15;
+                        
+                    }
+                    else if (vehiculo == "Van")
+                    {
+                        Service.Precio = 15;
+                        
+                    }
+                    else if (vehiculo == "Camion")
+                    {
+                        Service.Precio = 15;
+                        
+                    }                                       
+                }
+                else if (servicio == "full")
+                {
+                    if (vehiculo == "Liviano")
+                    {
+                        return 10;
+                    }
+                    else if (vehiculo == "Camioneta")
+                    {
+                        return 15;
+                    }
+                    else if (vehiculo == "Van")
+                    {
+                        return 15;
+                    }
+                    else if (vehiculo == "Camion")
+                    {
+                        return 15;
+                    }                    
+                }
+                else if (servicio == "motor")
+                {
+                    if (vehiculo == "Liviano")
+                    {
+                        return 10;
+                    }
+                    else if (vehiculo == "Camioneta")
+                    {
+                        return 15;
+                    }
+                    else if (vehiculo == "Van")
+                    {
+                        return 15;
+                    }
+                    else if (vehiculo == "Camion")
+                    {
+                        return 15;
+                    }                    
+                }
+                else if (servicio == "brillada")
+                {
+                    if (vehiculo == "Liviano")
+                    {
+                        return 10;
+                    }
+                    else if (vehiculo == "Camioneta")
+                    {
+                        return 15;
+                    }
+                    else if (vehiculo == "Van")
+                    {
+                        return 15;
+                    }
+                    else if (vehiculo == "Camion")
+                    {
+                        return 15;
+                    }                    
+                }
+            }
+
+             return 0; // Valor predeterminado si no se encuentra una combinación válida
+            
+        }
+            
+        }
+
     </div>
 
     <button class="btn btn-primary" type="submit">Guardar Cambios</button>

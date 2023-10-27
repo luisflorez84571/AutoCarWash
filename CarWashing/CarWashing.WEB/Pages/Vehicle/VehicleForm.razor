@@ -5,29 +5,25 @@
 <EditForm EditContext="editContext" OnSubmit="OnSubmit">
     <DataAnnotationsValidator />
     <div class="mb-3">
-        <label>Documento:</label>
+        <label>Marca:</label>
         <div>
-            <InputText class="form-control" @bind-Value="@Employee.Document" />
-            <ValidationMessage For="@(() => Employee.Document)" />
+            <InputText class="form-control" @bind-Value="@Vehicle.Marca" />
+            <ValidationMessage For="@(() => Vehicle.Marca)" />
         </div>
         <br />
-        <label>Nombre:</label>
+        <label>Color:</label>
         <div>
-            <InputText class="form-control" @bind-Value="@Employee.Nombre" />
-            <ValidationMessage For="@(() => Employee.Nombre)" />
+            <InputText class="form-control" @bind-Value="@Vehicle.Color" />
+            <ValidationMessage For="@(() => Vehicle.Color)" />
         </div>
         <br />
-        <label>Rol:</label>
+        <label>Placa:</label>
         <div>
-            <InputText class="form-control" @bind-Value="@Employee.Rol" />
-            <ValidationMessage For="@(() => Employee.Rol)" />
+            <InputText class="form-control" @bind-Value="@Vehicle.NumeroPlaca" />
+            <ValidationMessage For="@(() => Vehicle.NumeroPlaca)" />
         </div>
-        <br />
-        <label>Horario:</label>
-        <div>
-            <InputText class="form-control" @bind-Value="@Employee.HorarioTrabajo" />
-            <ValidationMessage For="@(() => Employee.HorarioTrabajo)" />
-        </div>
+        <br />       
+        
     </div>
 
     <button class="btn btn-primary" type="submit">Guardar Cambios</button>
@@ -41,14 +37,14 @@
 
     protected override void OnInitialized()
     {
-        editContext = new(Employee);
+        editContext = new(Vehicle);
 
     }
 
 
     [EditorRequired]
     [Parameter]
-    public Employee Employee { get; set; } = null!;
+    public Vehicle Vehicle { get; set; } = null!;
 
     [EditorRequired]
     [Parameter]

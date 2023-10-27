@@ -25,7 +25,7 @@ namespace CarWashing.Shared.Entities
         [Display(Name = "NúmeroPlaca")]
         [MaxLength(20, ErrorMessage = "El campo {0} debe tener máximo {1} caractéres.")]
         [Required(ErrorMessage = "El campo {0} es obligatorio.")]
-        public string NúmeroPlaca { get; set; }
+        public string NumeroPlaca { get; set; }
 
         // Clave foránea para el Cliente al que pertenece el vehículo
         public int ClientId { get; set; }
