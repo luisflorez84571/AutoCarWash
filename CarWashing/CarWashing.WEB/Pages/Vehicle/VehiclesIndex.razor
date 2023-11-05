@@ -5,7 +5,7 @@
 @inject SweetAlertService swal
 
 
-<h3>Vehiculo</h3>
+<h3>vehiculo</h3>
 
 <div class="mb-3">
     <a class="btn btn-primary" href="/vehicles/create">Nuevo Vehiculo</a>
@@ -17,7 +17,7 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th>Datos del Vehiculo</th>
+                    <th>Datos del Vehiculo</th>                    
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -26,11 +26,14 @@
                 {
                     <tr>
                         <td>
-                            @vehicle.VehicleId
+                            @vehicle.VehicleId-
+                            @vehicle.Marca
+                            @vehicle.Color
+                            - Placa: @vehicle.NumeroPlaca                            
                         </td>
                         <td>
                             <a href="/vehicles/edit/@vehicle.VehicleId" class="btn btn-warning">Editar</a>
-                            <button class="btn btn-danger" @onclick=@(() => Delete(vehicle))>Borrar</button>
+                            <button class="btn btn-danger" @onclick=@(() => Delete(vehicle))>Borrar</button>                           
                         </td>
 
                     </tr>

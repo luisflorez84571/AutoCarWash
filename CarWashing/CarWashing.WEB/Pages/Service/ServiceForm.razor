@@ -5,7 +5,7 @@
 <EditForm EditContext="editContext" OnSubmit="OnSubmit">
     <DataAnnotationsValidator />
     <div class="mb-3">
-        <h3>Tipo de Servicio:</h3>
+        <h3>Tipo de Servicio:</h3>        
         <InputSelect class="form-control" @bind-Value="@Service.Servicio">            
             <option value=""></option>
             <option value="sencilla">Lavada sencilla</option>
@@ -13,7 +13,7 @@
             <option value="motor">Lavada de motor</option>
             <option value="brillada">Brillada</option>
         </InputSelect>
-        <br />
+                
         @if (!string.IsNullOrEmpty(Service.Servicio))
         {
             <p>Seleccionaste: @Service.Servicio</p>
@@ -31,7 +31,7 @@
             <option value="Van">Van</option>
             <option value="Camion">Camion</option>
         </InputSelect>        
-        <br />
+        
         @if (!string.IsNullOrEmpty(Service.Vehiculo))
         {
             <p>Seleccionaste: @Service.Vehiculo</p>
@@ -41,107 +41,100 @@
             <p>No has seleccionado el tipo de vehiculo</p>
         }
         
-        <h3>El valor es: @Service.Precio</h3>
-
-        @code {
-            public int PrecioServicio()
+       @if (!string.IsNullOrEmpty(Service.Servicio) && !string.IsNullOrEmpty(Service.Vehiculo))
         {
-            string servicio = Service.Servicio;
-            string vehiculo = Service.Vehiculo;
-
-            if (!string.IsNullOrEmpty(servicio) && !string.IsNullOrEmpty(vehiculo))
-            {               
-                if (servicio == "sencilla")
+            decimal precioCalculado = 0;
+            
+            if (Service.Servicio == "sencilla")
+            {
+                if (Service.Vehiculo == "Liviano")
                 {
-                    if (vehiculo == "Liviano")
-                    {
-                        Service.Precio = 10;
-                        
-                    }
-                    else if (vehiculo == "Camioneta")
-                    {
-                        Service.Precio = 15;
-                        
-                    }
-                    else if (vehiculo == "Van")
-                    {
-                        Service.Precio = 15;
-                        
-                    }
-                    else if (vehiculo == "Camion")
-                    {
-                        Service.Precio = 15;
-                        
-                    }                                       
+                    Service.Precio = 15000;                    
                 }
-                else if (servicio == "full")
+                else if (Service.Vehiculo == "Camioneta")
                 {
-                    if (vehiculo == "Liviano")
-                    {
-                        return 10;
-                    }
-                    else if (vehiculo == "Camioneta")
-                    {
-                        return 15;
-                    }
-                    else if (vehiculo == "Van")
-                    {
-                        return 15;
-                    }
-                    else if (vehiculo == "Camion")
-                    {
-                        return 15;
-                    }                    
+                    Service.Precio = 18000;                    
                 }
-                else if (servicio == "motor")
+                else if (Service.Vehiculo == "Van")
                 {
-                    if (vehiculo == "Liviano")
-                    {
-                        return 10;
-                    }
-                    else if (vehiculo == "Camioneta")
-                    {
-                        return 15;
-                    }
-                    else if (vehiculo == "Van")
-                    {
-                        return 15;
-                    }
-                    else if (vehiculo == "Camion")
-                    {
-                        return 15;
-                    }                    
+                    Service.Precio = 20000;                    
                 }
-                else if (servicio == "brillada")
+                else if (Service.Vehiculo == "Camion")
                 {
-                    if (vehiculo == "Liviano")
-                    {
-                        return 10;
-                    }
-                    else if (vehiculo == "Camioneta")
-                    {
-                        return 15;
-                    }
-                    else if (vehiculo == "Van")
-                    {
-                        return 15;
-                    }
-                    else if (vehiculo == "Camion")
-                    {
-                        return 15;
-                    }                    
+                    Service.Precio = 30000;                    
                 }
+                precioCalculado = Service.Precio;
             }
-
-             return 0; // Valor predeterminado si no se encuentra una combinación válida
-            
-        }
-            
-        }
-
-    </div>
-
-    <button class="btn btn-primary" type="submit">Guardar Cambios</button>
+            else if (Service.Servicio == "full")
+            {
+                if (Service.Vehiculo == "Liviano")
+                {
+                    Service.Precio = 18000;                    
+                }
+                else if (Service.Vehiculo == "Camioneta")
+                {
+                    Service.Precio = 25000;                    
+                }
+                else if (Service.Vehiculo == "Van")
+                {
+                    Service.Precio = 30000;                    
+                }
+                else if (Service.Vehiculo == "Camion")
+                {
+                    Service.Precio = 45000;                   
+                }
+                precioCalculado = Service.Precio;
+            }
+            else if (Service.Servicio == "motor")
+            {
+                if (Service.Vehiculo == "Liviano")
+                {
+                    Service.Precio = 20000;                    
+                }
+                else if (Service.Vehiculo == "Camioneta")
+                {
+                    Service.Precio = 25000;                    
+                }
+                else if (Service.Vehiculo == "Van")
+                {
+                    Service.Precio = 25000;                    
+                }
+                else if (Service.Vehiculo == "Camion")
+                {
+                    Service.Precio = 35000;
+                }
+                precioCalculado = Service.Precio;                
+            }
+            else if (Service.Servicio == "brillada")
+            {
+                if (Service.Vehiculo == "Liviano")
+                {
+                    Service.Precio = 40000;
+                }
+                else if (Service.Vehiculo == "Camioneta")
+                {
+                    Service.Precio = 45000;
+                }
+                else if (Service.Vehiculo == "Van")
+                {
+                    Service.Precio = 60000;
+                }
+                else if (Service.Vehiculo == "Camion")
+                {
+                    Service.Precio = 60000;
+                }
+                precioCalculado = Service.Precio;
+            }
+            else
+            {
+                precioCalculado = 0;
+            }
+            <h3>El valor es: @precioCalculado</h3>
+            <button class="btn btn-primary" type="submit">Aceptar y Guardar</button>            
+            <ValidationMessage For="@(() => precioCalculado)" />
+        }       
+        
+    </div>   
     <button class="btn btn-success" @onclick="ReturnAction">Regresar</button>
 </EditForm>
 

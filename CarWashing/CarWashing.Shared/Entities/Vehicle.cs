@@ -23,7 +23,7 @@ namespace CarWashing.Shared.Entities
         public string Color { get; set; }
 
         [Display(Name = "NúmeroPlaca")]
-        [MaxLength(20, ErrorMessage = "El campo {0} debe tener máximo {1} caractéres.")]
+        [MaxLength(10, ErrorMessage = "El campo {0} debe tener máximo {1} caractéres.")]
         [Required(ErrorMessage = "El campo {0} es obligatorio.")]
         public string NumeroPlaca { get; set; }
 

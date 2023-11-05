@@ -1,13 +1,12 @@
-﻿
+﻿using Microsoft.AspNetCore.Identity;
+using CarWashing.Shared.Enums;
 using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
+
 
 namespace CarWashing.Shared.Entities
 {
-    public class Client
+    public class User : IdentityUser
     {
-        public int ClientId { get; set; }
-
         [Display(Name = "Documento")]
         [MaxLength(20, ErrorMessage = "El campo {0} debe tener máximo {1} caractéres.")]
         [Required(ErrorMessage = "El campo {0} es obligatorio.")]
@@ -23,26 +22,18 @@ namespace CarWashing.Shared.Entities
         [Required(ErrorMessage = "El campo {0} es obligatorio.")]
         public string LastName { get; set; } = null!;
 
-        [Display(Name = "Celular")]
-        [MaxLength(50, ErrorMessage = "El campo {0} debe tener máximo {1} caractéres.")]
+        [Display(Name = "Dirección")]
+        [MaxLength(200, ErrorMessage = "El campo {0} debe tener máximo {1} caractéres.")]
         [Required(ErrorMessage = "El campo {0} es obligatorio.")]
-        public string Celphone { get; set; } = null!;
+        public string Address { get; set; } = null!;
 
-        [Display(Name = "Correo")]
-        [MaxLength(50, ErrorMessage = "El campo {0} debe tener máximo {1} caractéres.")]
-        [Required(ErrorMessage = "El campo {0} es obligatorio.")]
-        public string Mail { get; set; } = null!;
+        [Display(Name = "Foto")]
+        public string Photo { get; set; }
 
-        // Vehículos asociados al cliente
-
-        [JsonIgnore]
-        public ICollection<Vehicle> Vehicles { get; set; }
-
-        [JsonIgnore]
-        public ICollection<Bill> Bills { get; set; }
-        [JsonIgnore]
-        public ICollection<Client> Clients { get; set; }
-
-        public ICollection<User> Users { get; set; }
+        [Display(Name = "Tipo de usuario")]
+        public UserType UserType { get; set; }
+      
+        [Display(Name = "Usuario")]
+        public string FullName => $"{FirstName} {LastName}";
     }
 }
