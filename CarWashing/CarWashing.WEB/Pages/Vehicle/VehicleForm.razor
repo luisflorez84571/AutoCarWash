@@ -5,37 +5,25 @@
 <EditForm EditContext="editContext" OnSubmit="OnSubmit">
     <DataAnnotationsValidator />
     <div class="mb-3">
-        <label>Nombres:</label>
+        <label>Marca:</label>
         <div>
-            <InputText class="form-control" @bind-Value="@Client.FirstName" />
-            <ValidationMessage For="@(() => Client.FirstName)" />
+            <InputText class="form-control" @bind-Value="@Vehicle.Marca" />
+            <ValidationMessage For="@(() => Vehicle.Marca)" />
         </div>
         <br />
-        <label>Apellidos:</label>
+        <label>Color:</label>
         <div>
-            <InputText class="form-control" @bind-Value="@Client.LastName" />
-            <ValidationMessage For="@(() => Client.LastName)" />
+            <InputText class="form-control" @bind-Value="@Vehicle.Color" />
+            <ValidationMessage For="@(() => Vehicle.Color)" />
         </div>
         <br />
-        <label>Documento:</label>
+        <label>Placa:</label>
         <div>
-            <InputText class="form-control" @bind-Value="@Client.Document" />
-            <ValidationMessage For="@(() => Client.Document)" />
-        </div>
-        <br />
-        <label>Telefono:</label>
-        <div>
-            <InputText class="form-control" @bind-Value="@Client.Celphone" />
-            <ValidationMessage For="@(() => Client.Celphone)" />
+            <InputText class="form-control" @bind-Value="@Vehicle.NumeroPlaca" />
+            <ValidationMessage For="@(() => Vehicle.NumeroPlaca)" />
         </div>
         <br />
         
-        <label>Correo:</label>
-        <div>
-            <InputText class="form-control" @bind-Value="@Client.Mail" />
-            <ValidationMessage For="@(() => Client.Mail)" />
-        </div>
-        <br />
     </div>
 
     <button class="btn btn-primary" type="submit">Guardar Cambios</button>
@@ -49,13 +37,14 @@
 
     protected override void OnInitialized()
     {
-        editContext = new(Client);
+        editContext = new(Vehicle);
+
     }
 
 
     [EditorRequired]
     [Parameter]
-    public Client Client { get; set; } = null!;
+    public Vehicle Vehicle { get; set; } = null!;
 
     [EditorRequired]
     [Parameter]

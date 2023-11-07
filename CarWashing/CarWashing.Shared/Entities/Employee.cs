@@ -34,6 +34,7 @@ namespace CarWashing.Shared.Entities
 
         [JsonIgnore]
         public ICollection<Employee> Employees { get; set; }
+        public ICollection<User> Users { get; set; }
 
     }
 }

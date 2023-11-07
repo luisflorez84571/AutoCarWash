@@ -1,36 +1,39 @@
-﻿@page "/services"
+﻿@page "/vehicles"
 
 @inject IRepository repository
 @inject NavigationManager navigationManager
 @inject SweetAlertService swal
 
-<h3>Servicio</h3>
+
+<h3>vehiculo</h3>
 
 <div class="mb-3">
-    <a class="btn btn-primary" href="/services/create">Nuevo Servicio</a>
+    <a class="btn btn-primary" href="/vehicles/create">Nuevo Vehiculo</a>
 </div>
 
-<GenericList MyList="Services">
+<GenericList MyList="Vehicles">
 
     <Body>
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th>Service</th>
-                    <th></th>
-
+                    <th>Datos del Vehiculo</th>                    
+                    <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (var service in Services!)
+                @foreach (var vehicle in Vehicles!)
                 {
                     <tr>
                         <td>
-                            @service.ServiceId
+                            @vehicle.VehicleId-
+                            @vehicle.Marca
+                            @vehicle.Color
+                            - Placa: @vehicle.NumeroPlaca                            
                         </td>
                         <td>
-                            <a href="/services/edit/@service.ServiceId" class="btn btn-warning">Editar</a>
-                            <button class="btn btn-danger" @onclick=@(() => Delete(service))>Borrar</button>
+                            <a href="/vehicles/edit/@vehicle.VehicleId" class="btn btn-warning">Editar</a>
+                            <button class="btn btn-danger" @onclick=@(() => Delete(vehicle))>Borrar</button>                           
                         </td>
 
                     </tr>
@@ -43,7 +46,7 @@
 </GenericList>
 
 @code {
-    public List<Service> Services { get; set; }
+    public List<Vehicle> Vehicles { get; set; }
 
     protected async override Task OnInitializedAsync()
     {
@@ -52,11 +55,11 @@
 
     private async Task Load()
     {
-        var responseHppt = await repository.Get<List<Service>>("/api/services");
-        Services = responseHppt.Response!;
+        var responseHppt = await repository.Get<List<Vehicle>>("/api/vehicles");
+        Vehicles = responseHppt.Response!;
     }
 
-    private async Task Delete(Service service)
+    private async Task Delete(Vehicle vehicle)
     {
         var result = await swal.FireAsync(new SweetAlertOptions
             {
@@ -73,7 +76,7 @@
             return;
         }
 
-        var responseHTTP = await repository.Delete($"/api/services/{service.ServiceId}");
+        var responseHTTP = await repository.Delete($"/api/vehicles/{vehicle.VehicleId}");
 
         if (responseHTTP.Error)
         {
@@ -94,6 +97,4 @@
     }
 
 }
-
-
 

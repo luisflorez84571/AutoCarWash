@@ -5,30 +5,136 @@
 <EditForm EditContext="editContext" OnSubmit="OnSubmit">
     <DataAnnotationsValidator />
     <div class="mb-3">
-        <h3>Tipo de Servicio:</h3>
-         <form>
-           <label for="Servicios">Servicios:</label>
-            <select id="Servicios" name="Servicios">
-                <option value="sencilla1">Lavada sencilla</option>
-                <option value="full2">Lavada full</option>
-                <option value="motor3">Lavada de Motor</option>
-                <option value="brillada4">Brillada</option>                
-            </select>
-        </form> 
-        <br />
-        <h3>Tipo de Vehiculo:</h3>
-        <form>
-            <label for="Vehiculo">Vehiculo:</label>
-            <select id="Vehiculo" name="Vehiculo">
-                <option value="Liviano1">Liviano</option>
-                <option value="Camioneta2">Camioneta</option>
-                <option value="Van3">Van</option>
-                <option value="Camion4">Camion</option>
-            </select>
-        </form>
-    </div>
+        <h3>Tipo de Servicio:</h3>        
+        <InputSelect class="form-control" @bind-Value="@Service.Servicio">            
+            <option value=""></option>
+            <option value="sencilla">Lavada sencilla</option>
+            <option value="full">Lavada full</option>
+            <option value="motor">Lavada de motor</option>
+            <option value="brillada">Brillada</option>
+        </InputSelect>
+                
+        @if (!string.IsNullOrEmpty(Service.Servicio))
+        {
+            <p>Seleccionaste: @Service.Servicio</p>
+        }
+        else
+        {
+            <p>No has seleccionado un servicio</p>
+        }
 
-    <button class="btn btn-primary" type="submit">Guardar Cambios</button>
+        <h3>Tipo de Vehiculo:</h3>
+        <InputSelect class="form-control" @bind-Value="@Service.Vehiculo">
+            <option value=""></option>
+            <option value="Liviano">Liviano</option>
+            <option value="Camioneta">Camioneta</option>
+            <option value="Van">Van</option>
+            <option value="Camion">Camion</option>
+        </InputSelect>        
+        
+        @if (!string.IsNullOrEmpty(Service.Vehiculo))
+        {
+            <p>Seleccionaste: @Service.Vehiculo</p>
+        }
+        else
+        {
+            <p>No has seleccionado el tipo de vehiculo</p>
+        }
+        
+       @if (!string.IsNullOrEmpty(Service.Servicio) && !string.IsNullOrEmpty(Service.Vehiculo))
+        {
+            decimal precioCalculado = 0;
+            
+            if (Service.Servicio == "sencilla")
+            {
+                if (Service.Vehiculo == "Liviano")
+                {
+                    Service.Precio = 15000;                    
+                }
+                else if (Service.Vehiculo == "Camioneta")
+                {
+                    Service.Precio = 18000;                    
+                }
+                else if (Service.Vehiculo == "Van")
+                {
+                    Service.Precio = 20000;                    
+                }
+                else if (Service.Vehiculo == "Camion")
+                {
+                    Service.Precio = 30000;                    
+                }
+                precioCalculado = Service.Precio;
+            }
+            else if (Service.Servicio == "full")
+            {
+                if (Service.Vehiculo == "Liviano")
+                {
+                    Service.Precio = 18000;                    
+                }
+                else if (Service.Vehiculo == "Camioneta")
+                {
+                    Service.Precio = 25000;                    
+                }
+                else if (Service.Vehiculo == "Van")
+                {
+                    Service.Precio = 30000;                    
+                }
+                else if (Service.Vehiculo == "Camion")
+                {
+                    Service.Precio = 45000;                   
+                }
+                precioCalculado = Service.Precio;
+            }
+            else if (Service.Servicio == "motor")
+            {
+                if (Service.Vehiculo == "Liviano")
+                {
+                    Service.Precio = 20000;                    
+                }
+                else if (Service.Vehiculo == "Camioneta")
+                {
+                    Service.Precio = 25000;                    
+                }
+                else if (Service.Vehiculo == "Van")
+                {
+                    Service.Precio = 25000;                    
+                }
+                else if (Service.Vehiculo == "Camion")
+                {
+                    Service.Precio = 35000;
+                }
+                precioCalculado = Service.Precio;                
+            }
+            else if (Service.Servicio == "brillada")
+            {
+                if (Service.Vehiculo == "Liviano")
+                {
+                    Service.Precio = 40000;
+                }
+                else if (Service.Vehiculo == "Camioneta")
+                {
+                    Service.Precio = 45000;
+                }
+                else if (Service.Vehiculo == "Van")
+                {
+                    Service.Precio = 60000;
+                }
+                else if (Service.Vehiculo == "Camion")
+                {
+                    Service.Precio = 60000;
+                }
+                precioCalculado = Service.Precio;
+            }
+            else
+            {
+                precioCalculado = 0;
+            }
+            <h3>El valor es: @precioCalculado</h3>
+            <button class="btn btn-primary" type="submit">Aceptar y Guardar</button>            
+            <ValidationMessage For="@(() => precioCalculado)" />
+        }       
+        
+    </div>   
     <button class="btn btn-success" @onclick="ReturnAction">Regresar</button>
 </EditForm>
 

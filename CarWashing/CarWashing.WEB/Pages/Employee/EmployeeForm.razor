@@ -5,10 +5,28 @@
 <EditForm EditContext="editContext" OnSubmit="OnSubmit">
     <DataAnnotationsValidator />
     <div class="mb-3">
-        <label>Empleado:</label>
+        <label>Documento:</label>
+        <div>
+            <InputText class="form-control" @bind-Value="@Employee.Document" />
+            <ValidationMessage For="@(() => Employee.Document)" />
+        </div>
+        <br />
+        <label>Nombre:</label>
         <div>
             <InputText class="form-control" @bind-Value="@Employee.Nombre" />
-            <ValidationMessage For="@(() => Employee.EmployeeId)" />
+            <ValidationMessage For="@(() => Employee.Nombre)" />
+        </div>
+        <br />
+        <label>Rol:</label>
+        <div>
+            <InputText class="form-control" @bind-Value="@Employee.Rol" />
+            <ValidationMessage For="@(() => Employee.Rol)" />
+        </div>
+        <br />
+        <label>Horario:</label>
+        <div>
+            <InputText class="form-control" @bind-Value="@Employee.HorarioTrabajo" />
+            <ValidationMessage For="@(() => Employee.HorarioTrabajo)" />
         </div>
     </div>
 
