@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Migrations;
 using System.Collections.Generic;
+using System.Diagnostics.Metrics;
 using System.Reflection.Emit;
 using static CarWashing.Shared.Entities.Service;
 
@@ -41,15 +42,22 @@ namespace CarWashing.API.Data
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
-            
+            base.OnModelCreating(modelBuilder);            
             modelBuilder.Entity<Client>().HasIndex(c => c.FirstName).IsUnique();
             modelBuilder.Entity<Employee>().HasIndex(c => c.Nombre).IsUnique();
             modelBuilder.Entity<Service>().HasIndex("ServiceId", "Servicio").IsUnique();
             modelBuilder.Entity<Bill>().HasIndex("BillId", "ClientId", "MontoTotal").IsUnique();
             modelBuilder.Entity<Scheduling>().HasIndex("SchedulingId", "ClientId", "VehicleId", "date").IsUnique();
-            modelBuilder.Entity<History>().HasIndex("HistoryId", "Descripcion").IsUnique();            
-
+            modelBuilder.Entity<History>().HasIndex("HistoryId", "Descripcion").IsUnique();
+            DisableCascadingDelete(modelBuilder);
+        }
+        private void DisableCascadingDelete(ModelBuilder modelBuilder)
+        {
+            var relationships = modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys());
+            foreach (var relationship in relationships)
+            {
+                relationship.DeleteBehavior = DeleteBehavior.Restrict;
+            }
         }
     }
 
