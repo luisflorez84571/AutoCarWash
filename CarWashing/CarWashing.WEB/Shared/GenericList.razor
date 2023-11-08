@@ -4,7 +4,7 @@
 {
     @if (Loading is null)
     {
-        <div class="align-items-center" width="200px" height="200px">            
+        <div class="align-items-center" width="200px" height="200px">
             <img src=" https://media.tenor.com/oGoY4h0pGYUAAAAj/updatess.gif " />
         </div>
     }
@@ -36,11 +36,11 @@ else
     [Parameter]
     public RenderFragment NoRecords { get; set; }
 
-    [Parameter]
     [EditorRequired]
+    [Parameter]
     public RenderFragment Body { get; set; } = null!;
 
-    [Parameter]
     [EditorRequired]
+    [Parameter]
     public List<Titem> MyList { get; set; } = null!;
 }

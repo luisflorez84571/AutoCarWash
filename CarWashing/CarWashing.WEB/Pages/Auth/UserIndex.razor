@@ -1,0 +1,53 @@
+﻿@page "/users"
+
+@if (Users is null)
+{
+    <Loading />
+}
+else
+{
+    <GenericList MyList="Users">
+        <Body>
+            <div class="card">
+                <div class="card-header">
+                    <span>
+                        <i class="oi oi-people"></i> Usuarios
+                        <a class="btn btn-sm btn-primary float-end" href="/register/?IsAdmin=true"><i class="oi oi-plus"></i> Adicionar Administrador</a>
+                    </span>
+                </div>
+                <div class="card-body">                   
+
+                    <Pagination CurrentPage="currentPage"
+                            TotalPages="totalPages"
+                            SelectedPage="SelectedPage" />
+
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>                                
+                                <th>Usuario</th>
+                                <th>Documento</th>
+                                <th>Teléfono</th>
+                                <th>Email</th>                                
+                                <th>Confirmado</th>
+                                <th>Tipo Usuario</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var user in Users)
+                            {
+                                <tr>                                    
+                                    <td>@user.FullName</td>
+                                    <td>@user.Document</td>
+                                    <td>@user.PhoneNumber</td>
+                                    <td>@user.Email</td>                                    
+                                    <td>@user.EmailConfirmed</td>
+                                    <td>@EnumHelper.GetEnumDescription(user.UserType)</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </Body>
+    </GenericList>
+}

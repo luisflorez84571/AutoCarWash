@@ -55,7 +55,7 @@
 
     private async Task Load()
     {
-        var responseHppt = await repository.Get<List<Vehicle>>("/api/vehicles");
+        var responseHppt = await repository.GetAsync<List<Vehicle>>("/api/vehicles");
         Vehicles = responseHppt.Response!;
     }
 
@@ -76,7 +76,7 @@
             return;
         }
 
-        var responseHTTP = await repository.Delete($"/api/vehicles/{vehicle.VehicleId}");
+        var responseHTTP = await repository.DeleteAsync($"/api/vehicles/{vehicle.VehicleId}");
 
         if (responseHTTP.Error)
         {
