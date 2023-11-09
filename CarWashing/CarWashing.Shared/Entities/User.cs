@@ -22,13 +22,10 @@ namespace CarWashing.Shared.Entities
         [Required(ErrorMessage = "El campo {0} es obligatorio.")]
         public string LastName { get; set; } = null!;
 
-        [Display(Name = "Dirección")]
+        [Display(Name = "Correo")]
         [MaxLength(200, ErrorMessage = "El campo {0} debe tener máximo {1} caractéres.")]
         [Required(ErrorMessage = "El campo {0} es obligatorio.")]
-        public string Address { get; set; } = null!;
-
-        [Display(Name = "Foto")]
-        public string Photo { get; set; }
+        public string Email { get; set; } = null!;
 
         [Display(Name = "Tipo de usuario")]
         public UserType UserType { get; set; }

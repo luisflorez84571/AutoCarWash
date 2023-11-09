@@ -1,14 +1,29 @@
-﻿@using System.Net.Http
+﻿@using System.Net
+@using System.Net.Http
 @using System.Net.Http.Json
+
 @using Microsoft.AspNetCore.Components.Forms
 @using Microsoft.AspNetCore.Components.Routing
 @using Microsoft.AspNetCore.Components.Web
 @using Microsoft.AspNetCore.Components.Web.Virtualization
 @using Microsoft.AspNetCore.Components.WebAssembly.Http
 @using Microsoft.JSInterop
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Authorization
+
 @using CarWashing.WEB
 @using CarWashing.WEB.Shared
 @using CarWashing.Shared.Entities
 @using CarWashing.WEB.Pages
 @using CarWashing.WEB.Repositories
+@using CarWashing.WEB.Pages.Auth
+@using CarWashing.Shared.Enums
+@using CarWashing.Shared.DTOs
+@using CarWashing.WEB.Services
+@using CarWashing.WEB.Helpers
+
 @using CurrieTechnologies.Razor.SweetAlert2;
+@using Blazored.Modal
+@using Blazored.Modal.Services
+@using MudBlazor
+

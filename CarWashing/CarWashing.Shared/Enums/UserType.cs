@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
 
 namespace CarWashing.Shared.Enums
 {
     public enum UserType
     {
-        User,
-        Admin
+        [Description("Administrador")]
+        Admin,
+
+        [Description("Usuario")]
+        User
     }
 }

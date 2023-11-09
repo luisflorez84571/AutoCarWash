@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CarWashing.Shared.DTOs
+﻿namespace CarWashing.Shared.DTOs
 {
     public class PaginationDTO
     {
@@ -15,5 +9,7 @@ namespace CarWashing.Shared.DTOs
         public int RecordsNumber { get; set; } = 10;
 
         public string Filter { get; set; }
+
+        public string CategoryFilter { get; set; }
     }
 }
