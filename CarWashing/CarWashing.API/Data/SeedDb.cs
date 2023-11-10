@@ -30,40 +30,16 @@ namespace CarWashing.API.Data
             await _context.Database.EnsureCreatedAsync();
             //await CheckCountriesAsync();            
             await CheckRolesAsync();
-            await CheckUserAsync("0001", "Juan", "Zuluaga", "zulu@yopmail.com", "322 311 4620", "Calle Luna Calle Sol", "JuanZuluaga.jpg", UserType.Admin);
-            await CheckUserAsync("0002", "Ledys", "Bedoya", "ledys@yopmail.com", "322 311 4620", "Calle Luna Calle Sol", "LedysBedoya.jpg", UserType.User);
-            await CheckUserAsync("0003", "Brad", "Pitt", "brad@yopmail.com", "322 311 4620", "Calle Luna Calle Sol", "Brad.jpg", UserType.User);
-            await CheckUserAsync("0004", "Angelina", "Jolie", "angelina@yopmail.com", "322 311 4620", "Calle Luna Calle Sol", "Angelina.jpg", UserType.User);
-            await CheckUserAsync("0005", "Bob", "Marley", "bob@yopmail.com", "322 311 4620", "Calle Luna Calle Sol", "bob.jpg", UserType.User);
-            await CheckUserAsync("0006", "Celia", "Cruz", "celia@yopmail.com", "322 311 4620", "Calle Luna Calle Sol", "celia.jpg", UserType.Admin);
-            await CheckUserAsync("0007", "Fredy", "Mercury", "fredy@yopmail.com", "322 311 4620", "Calle Luna Calle Sol", "fredy.jpg", UserType.User);
-            await CheckUserAsync("0008", "Hector", "Lavoe", "hector@yopmail.com", "322 311 4620", "Calle Luna Calle Sol", "hector.jpg", UserType.User);
-            await CheckUserAsync("0009", "Liv", "Taylor", "liv@yopmail.com", "322 311 4620", "Calle Luna Calle Sol", "liv.jpg", UserType.User);
-            await CheckUserAsync("0010", "Otep", "Shamaya", "otep@yopmail.com", "322 311 4620", "Calle Luna Calle Sol", "otep.jpg", UserType.User);
-            await CheckUserAsync("0011", "Ozzy", "Osbourne", "ozzy@yopmail.com", "322 311 4620", "Calle Luna Calle Sol", "ozzy.jpg", UserType.User);
-            await CheckUserAsync("0012", "Selena", "Quintanilla", "selenba@yopmail.com", "322 311 4620", "Calle Luna Calle Sol", "selena.jpg", UserType.User);
+            await CheckUserAsync("0001", "Luis", "Florez", "pinef87@yopmail.com", "3148709090", "Calle 44 # 109", UserType.Admin);
+            await CheckUserAsync("0002", "Ledys", "Bedoya", "ledys@yopmail.com", "322 311 4620", "Calle Luna Calle Sol", UserType.User);
             
-        }               
-
-       
-        private async Task<User> CheckUserAsync(string document, string firstName, string lastName, string email, string phone, string address, string image, UserType userType)
+        }       
+        private async Task<User> CheckUserAsync(string document, string firstName, string lastName, string email, string phone, string address,  UserType userType)
         {
             var user = await _userHelper.GetUserAsync(email);
             if (user == null)
             {               
-
-                string filePath;
-                if (_runtimeInformationWrapper.IsOSPlatform(OSPlatform.Windows))
-                {
-                    filePath = $"{Environment.CurrentDirectory}\\Images\\users\\{image}";
-                }
-                else
-                {
-                    filePath = $"{Environment.CurrentDirectory}/Images/users/{image}";
-                }
-                var fileBytes = File.ReadAllBytes(filePath);
-                var imagePath = await _fileStorage.SaveFileAsync(fileBytes, "jpg", "users");
-
+                                
                 user = new User
                 {
                     FirstName = firstName,
