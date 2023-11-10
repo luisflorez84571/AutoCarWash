@@ -121,7 +121,7 @@ internal class Program
             using (var scope = scopedFactory!.CreateScope())
             {
                 var service = scope.ServiceProvider.GetService<SeedDb>();
-                service!.SeedAsync().Wait();
+                
             }
         }
 

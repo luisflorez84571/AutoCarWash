@@ -11,8 +11,7 @@ namespace CarWashing.API.Services
 
         public ApiService(IConfiguration configuration, HttpClient client)
         {
-            _client = client;
-            _client.BaseAddress = new Uri(configuration["CoutriesBackend:urlBase"]!);
+            _client = client;            
             _tokenName = configuration["CoutriesBackend:tokenName"]!;
             _tokenValue = configuration["CoutriesBackend:tokenValue"]!;
         }
