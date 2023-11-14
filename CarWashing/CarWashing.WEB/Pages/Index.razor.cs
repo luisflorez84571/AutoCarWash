@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using CarWashing.WEB.Repositories;
+using CarWashing.WEB.AuthenticationProviders;
 using CarWashing.Shared.DTOs;
 using CarWashing.Shared.Entities;
 using CarWashing.Shared.Responses;
@@ -31,17 +32,42 @@ namespace CarWashing.WEB.Pages
         [Parameter]
         [SupplyParameterFromQuery]
         public string Filter { get; set; } = "";
+              
+        private async Task CheckIsAuthenticatedAsync()
+        {
+            try
+            {
+                var authenticationState = await authenticationStateTask;
+
+                // Verificar nulos antes de acceder a IsAuthenticated
+                if (authenticationState?.User?.Identity != null)
+                {
+                    isAuthenticated = authenticationState.User.Identity.IsAuthenticated;
+                }
+                else
+                {
+                    isAuthenticated = false; // O toma alguna acción predeterminada.
+                }
+            }
+            catch (Exception ex)
+            {
+                // Manejar la excepción de manera adecuada (puede registrarla, mostrar un mensaje, etc.)
+                Console.WriteLine($"Error en CheckIsAuthenticatedAsync: {ex.Message}");
+            }
+        }
 
         protected override async Task OnParametersSetAsync()
         {
-            await CheckIsAuthenticatedAsync();                   
-        }        
-
-        private async Task CheckIsAuthenticatedAsync()
-        {
-            var authenticationState = await authenticationStateTask;
-            isAuthenticated = authenticationState.User.Identity!.IsAuthenticated;
+            try
+            {
+                await CheckIsAuthenticatedAsync();
+            }
+            catch (Exception ex)
+            {
+                // Manejar la excepción de manera adecuada (puede registrarla, mostrar un mensaje, etc.)
+                Console.WriteLine($"Error en OnParametersSetAsync: {ex.Message}");
+            }
         }
-        
+               
     }
 }
