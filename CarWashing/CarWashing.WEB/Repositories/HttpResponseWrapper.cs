@@ -19,12 +19,18 @@ namespace CarWashing.WEB.Repositories
 
         public async Task<string> GetErrorMessageAsync()
         {
-            if (!Error)
+            if (!Error || HttpResponseMessage == null)
             {
                 return null;
             }
 
             var statusCode = HttpResponseMessage.StatusCode;
+
+            if (!Error)
+            {
+                return null;
+            }
+            
             if (statusCode == HttpStatusCode.NotFound)
             {
                 return "Recurso no encontrado";
@@ -45,4 +51,5 @@ namespace CarWashing.WEB.Repositories
             return "Ha ocurrido un error inesperado";
         }
     }
+
 }

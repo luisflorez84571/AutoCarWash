@@ -42,20 +42,40 @@ namespace CarWashing.WEB.Repositories
             var responseHttp = await _httpClient.PostAsync(url, messageContet);
             return new HttpResponseWrapper<object>(null, !responseHttp.IsSuccessStatusCode, responseHttp);
         }
-
+        //-- inicio
         public async Task<HttpResponseWrapper<TResponse>> PostAsync<T, TResponse>(string url, T model)
         {
-            var messageJSON = JsonSerializer.Serialize(model);
-            var messageContet = new StringContent(messageJSON, Encoding.UTF8, "application/json");
-            var responseHttp = await _httpClient.PostAsync(url, messageContet);
-            if (responseHttp.IsSuccessStatusCode)
+            try
             {
-                var response = await UnserializeAnswerAsync<TResponse>(responseHttp);
-                return new HttpResponseWrapper<TResponse>(response, false, responseHttp);
-            }
+                var messageJSON = JsonSerializer.Serialize(model);
+                var messageContent = new StringContent(messageJSON, Encoding.UTF8, "application/json");
 
-            return new HttpResponseWrapper<TResponse>(default, !responseHttp.IsSuccessStatusCode, responseHttp);
+                var responseHttp = await _httpClient.PostAsync(url, messageContent);
+
+                if (responseHttp.IsSuccessStatusCode)
+                {
+                    var response = await UnserializeAnswerAsync<TResponse>(responseHttp);
+                    return new HttpResponseWrapper<TResponse>(response, false, responseHttp);
+                }
+
+                // Manejo de errores
+                var errorResponse = await responseHttp.Content.ReadAsStringAsync();
+                Console.WriteLine($"Error en la solicitud POST a {url}. Estado: {responseHttp.StatusCode}. Mensaje: {errorResponse}");
+
+                return new HttpResponseWrapper<TResponse>(default, !responseHttp.IsSuccessStatusCode, responseHttp);
+            }
+            catch (Exception ex)
+            {
+                // Manejo de excepciones
+                Console.WriteLine($"Excepción en PostAsync: {ex.Message}");
+                return new HttpResponseWrapper<TResponse>(default, true, null);
+            }
         }
+
+
+
+        //--fin ------------------------
+        
 
         public async Task<HttpResponseWrapper<object>> DeleteAsync(string url)
         {
