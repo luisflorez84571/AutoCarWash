@@ -1,4 +1,4 @@
-﻿namespace CarWashing.WEB.Services
+﻿namespace CarWashing.WEB.Auth
 {
     public interface ILoginService
     {

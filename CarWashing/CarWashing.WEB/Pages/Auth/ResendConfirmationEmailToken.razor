@@ -1,8 +1,11 @@
 ﻿@page "/ResendToken"
+@inject IRepository repository
+@inject SweetAlertService sweetAlertService
+@inject NavigationManager navigationManager
 
 @if (loading)
 {
-    <Loading/>
+    <div class="spinner" />
 }
 <div class="row">
     <div class="col-6">
@@ -28,3 +31,25 @@
         </EditForm>
     </div>
 </div>
+
+@code {
+    private EmailDTO emailDTO = new();
+    private bool loading;
+
+    private async Task ResendConfirmationEmailTokenAsync()
+    {
+        loading = true;
+        var responseHttp = await repository.Post("/api/accounts/ResedToken", emailDTO);
+        if (responseHttp.Error)
+        {
+            var message = await responseHttp.GetErrorMessageAsync();
+            await sweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+            loading = false;
+            return;
+        }
+
+        loading = false;
+        await sweetAlertService.FireAsync("Confirmación", "Se te ha enviado un correo electrónico de nuevo con las instrucciones para activar tu usuario.", SweetAlertIcon.Info);
+        navigationManager.NavigateTo("/");
+    }
+}

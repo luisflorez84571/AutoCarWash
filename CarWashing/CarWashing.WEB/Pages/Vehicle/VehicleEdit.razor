@@ -26,7 +26,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        var responseHTTP = await repository.GetAsync<Vehicle>($"api/vehicles/{Id}");
+        var responseHTTP = await repository.Get<Vehicle>($"api/vehicles/{Id}");
         
         if (responseHTTP.Error)
         {
@@ -48,7 +48,7 @@ else
 
     private async Task Edit()
     {
-        var responseHTTP = await repository.PutAsync("api/vehicles", vehicle);
+        var responseHTTP = await repository.Put("api/vehicles", vehicle);
 
         if (responseHTTP.Error)
         {

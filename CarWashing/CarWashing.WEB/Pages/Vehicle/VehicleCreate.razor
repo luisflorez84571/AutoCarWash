@@ -15,7 +15,7 @@
 
     private async Task Create()
     {
-        var responseHttp = await repository.PostAsync("/api/vehicles", vehicle);
+        var responseHttp = await repository.Post("/api/vehicles", vehicle);
         if (responseHttp.Error)
         {
             var message = await responseHttp.GetErrorMessageAsync();

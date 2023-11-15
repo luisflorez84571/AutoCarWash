@@ -4,6 +4,6 @@ namespace CarWashing.API.Services
 {
     public interface IApiService
     {
-        Task<Response<T>> GetAsync<T>(string servicePrefix, string controller);
+        Task<Response> GetListAsync<T>(string servicePrefix, string controller);
     }
 }

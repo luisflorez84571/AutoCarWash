@@ -52,7 +52,7 @@
 
     private async Task Load()
     {
-        var responseHppt = await repository.GetAsync<List<Service>>("/api/services");
+        var responseHppt = await repository.Get<List<Service>>("/api/services");
         Services = responseHppt.Response!;
     }
 
@@ -73,7 +73,7 @@
             return;
         }
 
-        var responseHTTP = await repository.DeleteAsync($"/api/services/{service.ServiceId}");
+        var responseHTTP = await repository.Delete($"/api/services/{service.ServiceId}");
 
         if (responseHTTP.Error)
         {

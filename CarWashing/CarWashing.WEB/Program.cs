@@ -1,8 +1,7 @@
 using Blazored.Modal;
 using CarWashing.WEB;
-using CarWashing.WEB.Services;
+using CarWashing.WEB.Auth;
 using CarWashing.WEB.Repositories;
-using CarWashing.WEB.AuthenticationProviders;
 
 using CurrieTechnologies.Razor.SweetAlert2;
 using Microsoft.AspNetCore.Components.Authorization;

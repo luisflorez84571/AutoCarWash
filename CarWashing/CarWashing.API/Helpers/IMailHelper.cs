@@ -2,11 +2,8 @@
 
 namespace CarWashing.API.Helpers
 {
-    namespace CarWashing.API.Helpers
+    public interface IMailHelper
     {
-        public interface IMailHelper
-        {
-            Response<string> SendMail(string toName, string toEmail, string subject, string body);
-        }
+        Response SendMail(string toName, string toEmail, string subject, string body);
     }
 }

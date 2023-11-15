@@ -1,11 +1,11 @@
 ﻿namespace CarWashing.Shared.Responses
 {
-    public class Response<T>
+    public class Response
     {
         public bool WasSuccess { get; set; }
 
         public string Message { get; set; }
 
-        public T Result { get; set; }
+        public object Result { get; set; }
     }
 }

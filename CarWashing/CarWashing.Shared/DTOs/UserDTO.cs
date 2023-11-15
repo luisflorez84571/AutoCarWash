@@ -1,5 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
-using CarWashing.Shared.Entities;
+﻿using CarWashing.Shared.Entities;
+using System.ComponentModel.DataAnnotations;
 
 namespace CarWashing.Shared.DTOs
 {

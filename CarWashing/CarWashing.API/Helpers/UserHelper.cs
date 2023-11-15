@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using CarWashing.API.UnitsOfWork;
+using Microsoft.EntityFrameworkCore;
+using CarWashing.API.Data;
 using CarWashing.Shared.DTOs;
 using CarWashing.Shared.Entities;
 
@@ -7,27 +8,27 @@ namespace CarWashing.API.Helpers
 {
     public class UserHelper : IUserHelper
     {
+        private readonly DataContext _context;
         private readonly UserManager<User> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly IUsersUnitOfWork _userUnitOfWork;
         private readonly SignInManager<User> _signInManager;
 
-        public UserHelper(UserManager<User> userManager, RoleManager<IdentityRole> roleManager, IUsersUnitOfWork userUnitOfWork, SignInManager<User> signInManager)
+        public UserHelper(DataContext context, UserManager<User> userManager, RoleManager<IdentityRole> roleManager, SignInManager<User> signInManager)
         {
+            _context = context;
             _userManager = userManager;
             _roleManager = roleManager;
-            _userUnitOfWork = userUnitOfWork;
             _signInManager = signInManager;
         }
 
-        public async Task<SignInResult> LoginAsync(LoginDTO model)
+        public async Task<string> GenerateEmailConfirmationTokenAsync(User user)
         {
-            return await _signInManager.PasswordSignInAsync(model.Email, model.Password, false, false);
+            return await _userManager.GenerateEmailConfirmationTokenAsync(user);
         }
 
-        public async Task LogoutAsync()
+        public async Task<IdentityResult> ConfirmEmailAsync(User user, string token)
         {
-            await _signInManager.SignOutAsync();
+            return await _userManager.ConfirmEmailAsync(user, token);
         }
 
         public async Task<IdentityResult> AddUserAsync(User user, string password)
@@ -42,7 +43,7 @@ namespace CarWashing.API.Helpers
 
         public async Task CheckRoleAsync(string roleName)
         {
-            var roleExists = await _roleManager.RoleExistsAsync(roleName);
+            bool roleExists = await _roleManager.RoleExistsAsync(roleName);
             if (!roleExists)
             {
                 await _roleManager.CreateAsync(new IdentityRole
@@ -52,15 +53,18 @@ namespace CarWashing.API.Helpers
             }
         }
 
-        public async Task<Client> GetUserAsync(string email)
+        public async Task<User> GetUserAsync(string email)
         {
-            var action = await _userUnitOfWork.GetAsync(email);
-            return action.Result!;
+            var user = await _context.Users                
+                .FirstOrDefaultAsync(x => x.Email == email);
+            return user!;
         }
 
-        public async Task<bool> IsUserInRoleAsync(User user, string roleName)
+        public async Task<User> GetUserAsync(Guid userId)
         {
-            return await _userManager.IsInRoleAsync(user, roleName);
+            var user = await _context.Users
+                .FirstOrDefaultAsync(x => x.Id == userId.ToString());
+            return user!;
         }
 
         public async Task<IdentityResult> ChangePasswordAsync(User user, string currentPassword, string newPassword)
@@ -73,20 +77,19 @@ namespace CarWashing.API.Helpers
             return await _userManager.UpdateAsync(user);
         }
 
-        public async Task<Client> GetUserAsync(Guid clientId)
+        public async Task<bool> IsUserInRoleAsync(User user, string roleName)
         {
-            var action = await _userUnitOfWork.GetAsync(clientId);
-            return action.Result;
+            return await _userManager.IsInRoleAsync(user, roleName);
         }
 
-        public async Task<string> GenerateEmailConfirmationTokenAsync(User user)
+        public async Task<SignInResult> LoginAsync(LoginDTO model)
         {
-            return await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            return await _signInManager.PasswordSignInAsync(model.Email, model.Password, false, false);
         }
 
-        public async Task<IdentityResult> ConfirmEmailAsync(User user, string token)
+        public async Task LogoutAsync()
         {
-            return await _userManager.ConfirmEmailAsync(user, token);
+            await _signInManager.SignOutAsync();
         }
 
         public async Task<string> GeneratePasswordResetTokenAsync(User user)
@@ -97,16 +100,6 @@ namespace CarWashing.API.Helpers
         public async Task<IdentityResult> ResetPasswordAsync(User user, string token, string password)
         {
             return await _userManager.ResetPasswordAsync(user, token, password);
-        }
-
-        Task<User> IUserHelper.GetUserAsync(string email)
-        {
-            throw new NotImplementedException();
-        }
-
-        Task<User> IUserHelper.GetUserAsync(Guid userId)
-        {
-            throw new NotImplementedException();
         }
     }
 }
