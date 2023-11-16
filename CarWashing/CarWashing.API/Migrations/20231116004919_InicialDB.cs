@@ -35,7 +35,8 @@ namespace CarWashing.API.Migrations
                     FirstName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Celphone = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Mail = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     ClientId1 = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -159,7 +160,10 @@ namespace CarWashing.API.Migrations
                     Document = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     FirstName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Celphone = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
+                    Photo = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserType = table.Column<int>(type: "int", nullable: false),
                     ClientId = table.Column<int>(type: "int", nullable: true),
                     EmployeeId = table.Column<int>(type: "int", nullable: true),

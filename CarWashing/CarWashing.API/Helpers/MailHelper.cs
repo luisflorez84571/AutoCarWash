@@ -1,5 +1,5 @@
-﻿using MimeKit;
-using CarWashing.API.Helpers.CarWashing.API.Helpers;
+﻿using MailKit.Net.Smtp;
+using MimeKit;
 using CarWashing.Shared.Responses;
 
 namespace CarWashing.API.Helpers
@@ -7,15 +7,13 @@ namespace CarWashing.API.Helpers
     public class MailHelper : IMailHelper
     {
         private readonly IConfiguration _configuration;
-        private readonly ISmtpClient _smtpClient;
 
-        public MailHelper(IConfiguration configuration, ISmtpClient smtpClient)
+        public MailHelper(IConfiguration configuration)
         {
             _configuration = configuration;
-            _smtpClient = smtpClient;
         }
 
-        public Response<string> SendMail(string toName, string toEmail, string subject, string body)
+        public Response SendMail(string toName, string toEmail, string subject, string body)
         {
             try
             {
@@ -29,25 +27,29 @@ namespace CarWashing.API.Helpers
                 message.From.Add(new MailboxAddress(name, from));
                 message.To.Add(new MailboxAddress(toName, toEmail));
                 message.Subject = subject;
-                BodyBuilder bodyBuilder = new BodyBuilder
+                var bodyBuilder = new BodyBuilder
                 {
                     HtmlBody = body
                 };
                 message.Body = bodyBuilder.ToMessageBody();
 
-                _smtpClient.Connect(smtp!, int.Parse(port!), false);
-                _smtpClient.Authenticate(from!, password!);
-                _smtpClient.Send(message);
-                _smtpClient.Disconnect(true);
+                using (var client = new SmtpClient())
+                {
+                    client.Connect(smtp, int.Parse(port!), false);
+                    client.Authenticate(from, password);
+                    client.Send(message);
+                    client.Disconnect(true);
+                }
 
-                return new Response<string> { WasSuccess = true };
+                return new Response { WasSuccess = true };
             }
             catch (Exception ex)
             {
-                return new Response<string>
+                return new Response
                 {
                     WasSuccess = false,
                     Message = ex.Message,
+                    Result = ex
                 };
             }
         }

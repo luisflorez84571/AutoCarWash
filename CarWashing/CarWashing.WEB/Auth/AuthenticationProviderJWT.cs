@@ -1,18 +1,17 @@
-﻿using System.IdentityModel.Tokens.Jwt;
-using System.Net.Http.Headers;
-using System.Security.Claims;
-using Microsoft.AspNetCore.Components.Authorization;
+﻿using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.JSInterop;
 using CarWashing.WEB.Helpers;
-using CarWashing.WEB.Services;
+using System.IdentityModel.Tokens.Jwt;
+using System.Net.Http.Headers;
+using System.Security.Claims;
 
-namespace CarWashing.WEB.AuthenticationProviders
+namespace CarWashing.WEB.Auth
 {
     public class AuthenticationProviderJWT : AuthenticationStateProvider, ILoginService
     {
         private readonly IJSRuntime _jSRuntime;
         private readonly HttpClient _httpClient;
-        private readonly string _tokenKey;
+        private readonly String _tokenKey;
         private readonly AuthenticationState _anonimous;
 
         public AuthenticationProviderJWT(IJSRuntime jSRuntime, HttpClient httpClient)
@@ -46,6 +45,7 @@ namespace CarWashing.WEB.AuthenticationProviders
             var jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
             var unserializedToken = jwtSecurityTokenHandler.ReadJwtToken(token);
             return unserializedToken.Claims;
+
         }
 
         public async Task LoginAsync(string token)

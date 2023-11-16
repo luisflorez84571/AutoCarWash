@@ -29,11 +29,17 @@
             <ValidationMessage For="@(() => Client.Celphone)" />
         </div>
         <br />
+        <label>Direccion:</label>
+        <div>
+            <InputText class="form-control" @bind-Value="@Client.Address" />
+            <ValidationMessage For="@(() => Client.Address)" />
+        </div>
+        <br />
         
         <label>Correo:</label>
         <div>
-            <InputText class="form-control" @bind-Value="@Client.Mail" />
-            <ValidationMessage For="@(() => Client.Mail)" />
+            <InputText class="form-control" @bind-Value="@Client.Email" />
+            <ValidationMessage For="@(() => Client.Email)" />
         </div>
         <br />
     </div>

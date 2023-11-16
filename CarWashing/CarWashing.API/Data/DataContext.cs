@@ -1,12 +1,6 @@
 ﻿using CarWashing.Shared.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Microsoft.EntityFrameworkCore.Migrations;
-using System.Collections.Generic;
-using System.Diagnostics.Metrics;
-using System.Reflection.Emit;
-using static CarWashing.Shared.Entities.Service;
 
 namespace CarWashing.API.Data
 {
@@ -23,23 +17,7 @@ namespace CarWashing.API.Data
         public DbSet<Employee> Employees { get; set; }
         public DbSet<History> Histories { get; set; }
         public DbSet<Vehicle> Vehicles { get; set; }
-
-        public class SomeService
-        {
-            private readonly DataContext _context;
-
-            public SomeService(DataContext context)
-            {
-                _context = context;
-            }
-
-            public void AddClient(Client client)
-            {
-                _context.Clients.Add(client);
-                _context.SaveChanges();
-            }
-
-        }
+        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);            
