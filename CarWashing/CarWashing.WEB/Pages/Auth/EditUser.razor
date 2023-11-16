@@ -47,15 +47,22 @@ else
                         <div class="mb-3">
                             <label>Teléfono:</label>
                             <div>
-                                <InputText class="form-control" @bind-Value="@user.PhoneNumber" />
-                                <ValidationMessage For="@(() => user.PhoneNumber)" />
+                                <InputText class="form-control" @bind-Value="@user.Celphone" />
+                                <ValidationMessage For="@(() => user.Celphone)" />
                             </div>
-                        </div>
+                        </div>                        
                         <div class="mb-3">
                             <label>Dirección:</label>
                             <div>
                                 <InputText class="form-control" @bind-Value="@user.Address" />
                                 <ValidationMessage For="@(() => user.Address)" />
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label>Correo:</label>
+                            <div>
+                                <InputText class="form-control" @bind-Value="@user.Email" />
+                                <ValidationMessage For="@(() => user.Email)" />
                             </div>
                         </div>
                     </div>

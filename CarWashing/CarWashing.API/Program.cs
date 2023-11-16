@@ -88,11 +88,11 @@ SeedData(app);
 
 void SeedData(WebApplication app)
 {
-    IServiceScopeFactory? scopedFactory = app.Services.GetService<IServiceScopeFactory>();
+    IServiceScopeFactory scopedFactory = app.Services.GetService<IServiceScopeFactory>();
 
-    using (IServiceScope? scope = scopedFactory!.CreateScope())
+    using (IServiceScope scope = scopedFactory!.CreateScope())
     {
-        SeedDb? service = scope.ServiceProvider.GetService<SeedDb>();
+        SeedDb service = scope.ServiceProvider.GetService<SeedDb>();
         service!.SeedAsync().Wait();
     }
 }

@@ -21,7 +21,6 @@ namespace CarWashing.API.Controllers
         private readonly IConfiguration _configuration;
         private readonly IMailHelper _mailHelper;
         private readonly DataContext _context;
-        private readonly string _container;
 
         public AccountsController(IUserHelper userHelper, IConfiguration configuration, IMailHelper mailHelper, DataContext context)
         {
@@ -29,7 +28,6 @@ namespace CarWashing.API.Controllers
             _configuration = configuration;
             _mailHelper = mailHelper;
             _context = context;
-            _container = "users";
         }
 
         [HttpPost("RecoverPassword")]
@@ -83,7 +81,7 @@ namespace CarWashing.API.Controllers
                 currentUser.FirstName = user.FirstName;
                 currentUser.LastName = user.LastName;
                 currentUser.Address = user.Address;
-                currentUser.PhoneNumber = user.PhoneNumber;
+                currentUser.Celphone = user.Celphone;
                 currentUser.Photo = !string.IsNullOrEmpty(user.Photo) && user.Photo != currentUser.Photo ? user.Photo : currentUser.Photo;
 
                 var result = await _userHelper.UpdateUserAsync(currentUser);
