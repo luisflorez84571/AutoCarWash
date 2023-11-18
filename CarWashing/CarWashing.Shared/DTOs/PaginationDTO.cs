@@ -10,6 +10,5 @@
 
         public string Filter { get; set; }
 
-        public string CategoryFilter { get; set; }
     }
 }

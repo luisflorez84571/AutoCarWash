@@ -33,12 +33,6 @@ namespace CarWashing.API.Migrations
                     b.Property<int?>("BillId1")
                         .HasColumnType("int");
 
-                    b.Property<int>("ClientId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ClientName")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("Fecha")
                         .HasMaxLength(20)
                         .HasColumnType("datetime2");
@@ -48,74 +42,27 @@ namespace CarWashing.API.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("ServiceId")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int?>("ServiceId1")
                         .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("BillId");
 
                     b.HasIndex("BillId1");
 
-                    b.HasIndex("ClientId");
-
                     b.HasIndex("ServiceId1");
 
-                    b.HasIndex("BillId", "ClientId", "MontoTotal")
-                        .IsUnique();
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("ServiceId", "UserId", "MontoTotal")
+                        .IsUnique()
+                        .HasFilter("[ServiceId] IS NOT NULL AND [UserId] IS NOT NULL");
 
                     b.ToTable("Bills");
-                });
-
-            modelBuilder.Entity("CarWashing.Shared.Entities.Client", b =>
-                {
-                    b.Property<int>("ClientId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ClientId"));
-
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("Celphone")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<int?>("ClientId1")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Document")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.HasKey("ClientId");
-
-                    b.HasIndex("ClientId1");
-
-                    b.HasIndex("FirstName")
-                        .IsUnique();
-
-                    b.ToTable("Clients");
                 });
 
             modelBuilder.Entity("CarWashing.Shared.Entities.Employee", b =>
@@ -167,9 +114,6 @@ namespace CarWashing.API.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("HistoryId"));
 
-                    b.Property<int>("ClientId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Descripcion")
                         .IsRequired()
                         .HasMaxLength(20)
@@ -188,6 +132,9 @@ namespace CarWashing.API.Migrations
                     b.Property<int?>("ServiceId1")
                         .HasColumnType("int");
 
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<int?>("VehicleId")
                         .HasColumnType("int");
 
@@ -196,16 +143,15 @@ namespace CarWashing.API.Migrations
 
                     b.HasKey("HistoryId");
 
-                    b.HasIndex("ClientId");
-
                     b.HasIndex("HistoryId1");
 
                     b.HasIndex("ServiceId1");
 
                     b.HasIndex("VehicleId");
 
-                    b.HasIndex("HistoryId", "Descripcion")
-                        .IsUnique();
+                    b.HasIndex("UserId", "Descripcion")
+                        .IsUnique()
+                        .HasFilter("[UserId] IS NOT NULL");
 
                     b.ToTable("Histories");
                 });
@@ -217,12 +163,6 @@ namespace CarWashing.API.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SchedulingId"));
-
-                    b.Property<int>("ClientId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ClientName")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<TimeSpan>("Hour")
                         .HasMaxLength(50)
@@ -237,8 +177,11 @@ namespace CarWashing.API.Migrations
                     b.Property<int?>("ServiceId1")
                         .HasColumnType("int");
 
-                    b.Property<string>("VehicleId")
+                    b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("VehicleId")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("VehicleId1")
                         .HasColumnType("int");
@@ -249,17 +192,16 @@ namespace CarWashing.API.Migrations
 
                     b.HasKey("SchedulingId");
 
-                    b.HasIndex("ClientId");
-
                     b.HasIndex("SchedulingId1");
 
                     b.HasIndex("ServiceId1");
 
+                    b.HasIndex("UserId");
+
                     b.HasIndex("VehicleId1");
 
-                    b.HasIndex("SchedulingId", "ClientId", "VehicleId", "date")
-                        .IsUnique()
-                        .HasFilter("[VehicleId] IS NOT NULL");
+                    b.HasIndex("date")
+                        .IsUnique();
 
                     b.ToTable("Schedulings");
                 });
@@ -271,9 +213,6 @@ namespace CarWashing.API.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ServiceId"));
-
-                    b.Property<int>("ClientId")
-                        .HasColumnType("int");
 
                     b.Property<decimal>("Precio")
                         .HasMaxLength(20)
@@ -287,6 +226,9 @@ namespace CarWashing.API.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("Vehiculo")
                         .IsRequired()
                         .HasMaxLength(20)
@@ -294,12 +236,12 @@ namespace CarWashing.API.Migrations
 
                     b.HasKey("ServiceId");
 
-                    b.HasIndex("ClientId");
-
                     b.HasIndex("ServiceId1");
 
-                    b.HasIndex("ServiceId", "Servicio")
+                    b.HasIndex("Servicio")
                         .IsUnique();
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Services");
                 });
@@ -321,9 +263,6 @@ namespace CarWashing.API.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
-
-                    b.Property<int?>("ClientId")
-                        .HasColumnType("int");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -396,8 +335,6 @@ namespace CarWashing.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ClientId");
-
                     b.HasIndex("EmployeeId");
 
                     b.HasIndex("NormalizedEmail")
@@ -419,9 +356,6 @@ namespace CarWashing.API.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("VehicleId"));
 
-                    b.Property<int>("ClientId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Color")
                         .IsRequired()
                         .HasMaxLength(20)
@@ -437,12 +371,15 @@ namespace CarWashing.API.Migrations
                         .HasMaxLength(10)
                         .HasColumnType("nvarchar(10)");
 
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<int?>("VehicleId1")
                         .HasColumnType("int");
 
                     b.HasKey("VehicleId");
 
-                    b.HasIndex("ClientId");
+                    b.HasIndex("UserId");
 
                     b.HasIndex("VehicleId1");
 
@@ -586,144 +523,109 @@ namespace CarWashing.API.Migrations
                 {
                     b.HasOne("CarWashing.Shared.Entities.Bill", null)
                         .WithMany("Bills")
-                        .HasForeignKey("BillId1")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("CarWashing.Shared.Entities.Client", "Client")
-                        .WithMany("Bills")
-                        .HasForeignKey("ClientId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .HasForeignKey("BillId1");
 
                     b.HasOne("CarWashing.Shared.Entities.Service", "Service")
                         .WithMany()
-                        .HasForeignKey("ServiceId1")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .HasForeignKey("ServiceId1");
 
-                    b.Navigation("Client");
+                    b.HasOne("CarWashing.Shared.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
 
                     b.Navigation("Service");
-                });
 
-            modelBuilder.Entity("CarWashing.Shared.Entities.Client", b =>
-                {
-                    b.HasOne("CarWashing.Shared.Entities.Client", null)
-                        .WithMany("Clients")
-                        .HasForeignKey("ClientId1")
-                        .OnDelete(DeleteBehavior.Restrict);
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("CarWashing.Shared.Entities.Employee", b =>
                 {
                     b.HasOne("CarWashing.Shared.Entities.Employee", null)
                         .WithMany("Employees")
-                        .HasForeignKey("EmployeeId1")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .HasForeignKey("EmployeeId1");
                 });
 
             modelBuilder.Entity("CarWashing.Shared.Entities.History", b =>
                 {
-                    b.HasOne("CarWashing.Shared.Entities.Client", "Client")
-                        .WithMany()
-                        .HasForeignKey("ClientId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("CarWashing.Shared.Entities.History", null)
                         .WithMany("Histories")
-                        .HasForeignKey("HistoryId1")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .HasForeignKey("HistoryId1");
 
                     b.HasOne("CarWashing.Shared.Entities.Service", "Service")
                         .WithMany()
-                        .HasForeignKey("ServiceId1")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .HasForeignKey("ServiceId1");
+
+                    b.HasOne("CarWashing.Shared.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
 
                     b.HasOne("CarWashing.Shared.Entities.Vehicle", "Vehicle")
                         .WithMany()
-                        .HasForeignKey("VehicleId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.Navigation("Client");
+                        .HasForeignKey("VehicleId");
 
                     b.Navigation("Service");
+
+                    b.Navigation("User");
 
                     b.Navigation("Vehicle");
                 });
 
             modelBuilder.Entity("CarWashing.Shared.Entities.Scheduling", b =>
                 {
-                    b.HasOne("CarWashing.Shared.Entities.Client", "Client")
-                        .WithMany()
-                        .HasForeignKey("ClientId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("CarWashing.Shared.Entities.Scheduling", null)
                         .WithMany("Schedulings")
-                        .HasForeignKey("SchedulingId1")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .HasForeignKey("SchedulingId1");
 
                     b.HasOne("CarWashing.Shared.Entities.Service", "Service")
                         .WithMany()
-                        .HasForeignKey("ServiceId1")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .HasForeignKey("ServiceId1");
+
+                    b.HasOne("CarWashing.Shared.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
 
                     b.HasOne("CarWashing.Shared.Entities.Vehicle", "Vehicle")
                         .WithMany()
-                        .HasForeignKey("VehicleId1")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.Navigation("Client");
+                        .HasForeignKey("VehicleId1");
 
                     b.Navigation("Service");
+
+                    b.Navigation("User");
 
                     b.Navigation("Vehicle");
                 });
 
             modelBuilder.Entity("CarWashing.Shared.Entities.Service", b =>
                 {
-                    b.HasOne("CarWashing.Shared.Entities.Client", "Client")
-                        .WithMany()
-                        .HasForeignKey("ClientId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("CarWashing.Shared.Entities.Service", null)
                         .WithMany("Services")
-                        .HasForeignKey("ServiceId1")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .HasForeignKey("ServiceId1");
 
-                    b.Navigation("Client");
+                    b.HasOne("CarWashing.Shared.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("CarWashing.Shared.Entities.User", b =>
                 {
-                    b.HasOne("CarWashing.Shared.Entities.Client", null)
-                        .WithMany("Users")
-                        .HasForeignKey("ClientId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
                     b.HasOne("CarWashing.Shared.Entities.Employee", null)
                         .WithMany("Users")
-                        .HasForeignKey("EmployeeId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .HasForeignKey("EmployeeId");
                 });
 
             modelBuilder.Entity("CarWashing.Shared.Entities.Vehicle", b =>
                 {
-                    b.HasOne("CarWashing.Shared.Entities.Client", "Client")
-                        .WithMany("Vehicles")
-                        .HasForeignKey("ClientId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                    b.HasOne("CarWashing.Shared.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
 
                     b.HasOne("CarWashing.Shared.Entities.Vehicle", null)
                         .WithMany("Vehicles")
-                        .HasForeignKey("VehicleId1")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .HasForeignKey("VehicleId1");
 
-                    b.Navigation("Client");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -731,7 +633,7 @@ namespace CarWashing.API.Migrations
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -740,7 +642,7 @@ namespace CarWashing.API.Migrations
                     b.HasOne("CarWashing.Shared.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -749,7 +651,7 @@ namespace CarWashing.API.Migrations
                     b.HasOne("CarWashing.Shared.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -758,13 +660,13 @@ namespace CarWashing.API.Migrations
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("CarWashing.Shared.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -773,24 +675,13 @@ namespace CarWashing.API.Migrations
                     b.HasOne("CarWashing.Shared.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
             modelBuilder.Entity("CarWashing.Shared.Entities.Bill", b =>
                 {
                     b.Navigation("Bills");
-                });
-
-            modelBuilder.Entity("CarWashing.Shared.Entities.Client", b =>
-                {
-                    b.Navigation("Bills");
-
-                    b.Navigation("Clients");
-
-                    b.Navigation("Users");
-
-                    b.Navigation("Vehicles");
                 });
 
             modelBuilder.Entity("CarWashing.Shared.Entities.Employee", b =>

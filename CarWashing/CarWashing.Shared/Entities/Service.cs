@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace CarWashing.Shared.Entities
 {
@@ -27,9 +22,9 @@ namespace CarWashing.Shared.Entities
         [Required(ErrorMessage = "El campo {0} es obligatorio.")]
         public string Vehiculo { get; set; }
 
-        public int ClientId { get; set; }
-        [JsonIgnore]
-        public Client Client { get; set; }
+        public User User { get; set; }
+
+        public string UserId { get; set; }
 
         [JsonIgnore]
         public ICollection<Service> Services { get; set; }

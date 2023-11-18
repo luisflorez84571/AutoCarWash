@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace CarWashing.Shared.Entities
 {
@@ -22,10 +17,8 @@ namespace CarWashing.Shared.Entities
         [Required(ErrorMessage = "El campo {0} es obligatorio.")]
         public TimeSpan Hour { get; set; }
 
-        public int ClientId { get; set; }
-        [JsonIgnore]
-        public Client Client { get; set; }
-
+        public User User { get; set; }
+        public string UserId { get; set; }
         public string VehicleId { get; set; }
         [JsonIgnore]
         public Vehicle Vehicle { get; set; }
@@ -33,8 +26,6 @@ namespace CarWashing.Shared.Entities
         public String ServiceId { get; set; }
         [JsonIgnore]
         public Service Service { get; set; }
-
-        public string ClientName { get; set; } = string.Empty;
 
         [JsonIgnore]
         public ICollection<Scheduling> Schedulings { get; set; }

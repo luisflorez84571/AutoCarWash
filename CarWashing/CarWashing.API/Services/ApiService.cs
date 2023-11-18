@@ -23,7 +23,7 @@ namespace CarWashing.API.Services
                 {
                     return new Response
                     {
-                        WasSuccess = false,
+                        IsSuccess = false,
                         Message = result,
                     };
                 }
@@ -31,7 +31,7 @@ namespace CarWashing.API.Services
                 List<T> list = JsonConvert.DeserializeObject<List<T>>(result)!;
                 return new Response
                 {
-                    WasSuccess = true,
+                    IsSuccess = true,
                     Result = list
                 };
             }
@@ -39,7 +39,7 @@ namespace CarWashing.API.Services
             {
                 return new Response
                 {
-                    WasSuccess = false,
+                    IsSuccess = false,
                     Message = ex.Message
                 };
             }
