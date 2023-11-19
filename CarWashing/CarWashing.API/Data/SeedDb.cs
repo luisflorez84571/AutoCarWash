@@ -20,8 +20,8 @@ namespace CarWashing.API.Data
             await _context.Database.EnsureCreatedAsync();
 
             await CheckRolesAsync();
-            await CheckUserAsync("0001", "Luis", "Florez", "pinaef87@hotmail.com", "3148709090", "Calle 44 # 109", UserType.Admin);
-            await CheckUserAsync("0002", "Isabel", "Garzon", "Isabel@hotmail.com", "322 311 4620", "Calle 44 # 109", UserType.User);
+            await CheckUserAsync("1017145769", "Luis", "Florez", "pinaef87@hotmail.com", "3148709090", "Calle 44 # 109", UserType.Admin);
+            await CheckUserAsync("1037614071", "Isabel", "Garzon", "Isabel@hotmail.com", "322 311 4620", "Calle 44 # 109", UserType.User);
 
         }
         private async Task CheckRolesAsync()
@@ -37,13 +37,13 @@ namespace CarWashing.API.Data
 
                 user = new User
                 {
+                    Document = document,
                     FirstName = firstName,
                     LastName = lastName,
                     Email = email,
                     UserName = email,
                     Celphone = phone,
-                    Address = address,
-                    Document = document,
+                    Address = address,                    
                     UserType = userType,
 
                 };

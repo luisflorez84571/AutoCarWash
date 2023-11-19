@@ -24,7 +24,7 @@ namespace CarWashing.Shared.Entities
 
         // Clave foránea para el Cliente al que pertenece el vehículo
         public User User { get; set; }
-        public string UserId { get; set; }
+        public int UserId { get; set; }
 
         [JsonIgnore]
         public ICollection<Vehicle> Vehicles { get; set; }

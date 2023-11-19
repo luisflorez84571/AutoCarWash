@@ -9,7 +9,7 @@ namespace CarWashing.API.Helpers
 
         public FileStorage(IConfiguration configuration)
         {
-            _connectionString = configuration.GetConnectionString("AzureStorage")!;
+            _connectionString = configuration.GetConnectionString("DefaultConnection")!;
         }
 
         public async Task RemoveFileAsync(string path, string containerName)

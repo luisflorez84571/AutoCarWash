@@ -22,13 +22,13 @@ namespace CarWashing.Shared.Entities
 
         public User User { get; set; }
 
-        public string UserId { get; set; }
+        public int UserId { get; set; }
 
         public int VehículoId { get; set; }
         [JsonIgnore]
         public Vehicle Vehicle { get; set; }
 
-        public String ServiceId { get; set; }
+        public int ServiceId { get; set; }
         [JsonIgnore]
         public Service Service { get; set; }
 

@@ -1,17 +1,14 @@
 ﻿@page "/services"
-
 @inject IRepository repository
 @inject NavigationManager navigationManager
 @inject SweetAlertService sweetAlertService
 @attribute [Authorize(Roles = "Admin")]
 
-@if (services is null)
-{
-    <div class="spinner" />
-}
-else
-{
-    <GenericList MyList="services">
+<h3>Servicio</h3>
+
+<a class="btn btn-primary mb-3" href="/services/create">Nuevo servicio</a>
+
+    <GenericList MyList="services">        
         <Body>
             <div class="card">
                 <div class="card-header">
@@ -50,8 +47,14 @@ else
                                         @service.Vehiculo
                                     </td>
                                     <td>
+                                        @service.Precio
+                                    </td>
+                                    <td>
+                                        @service.Servicio
+                                    </td>
+                                    <td>
                                         <a @onclick=@(() => ShowModal(service.ServiceId, true)) class="btn btn-warning"><i class="oi oi-pencil" /> Editar</a>
-                                        <button class="btn btn-danger" @onclick=@(() => Delete(service.ServiceId))><i class="oi oi-trash" /> Borrar</button>
+                                    <button class="btn btn-danger" @onclick=@(() => DeleteAsync(service.ServiceId))><i class="oi oi-trash" /> Borrar</button>
                                     </td>
                                 </tr>
                             }
@@ -145,14 +148,16 @@ else
         }
     }
 
-    private async Task Delete(int categoryId)
+    private async Task DeleteAsync(int serviceId)
     {
         var result = await sweetAlertService.FireAsync(new SweetAlertOptions
             {
                 Title = "Confirmación",
                 Text = "¿Esta seguro que quieres borrar el registro?",
                 Icon = SweetAlertIcon.Question,
-                ShowCancelButton = true
+                ShowCancelButton = true,
+                CancelButtonText = "No",
+                ConfirmButtonText = "Si"
             });
 
         var confirm = string.IsNullOrEmpty(result.Value);
@@ -162,7 +167,7 @@ else
             return;
         }
 
-        var responseHTTP = await repository.Delete($"api/services/{ServiceId}");
+        var responseHTTP = await repository.Delete($"api/services/{serviceId}");
 
         if (responseHTTP.Error)
         {

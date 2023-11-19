@@ -16,13 +16,13 @@ public class VehiclesController : ControllerBase
 
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Vehicle>>> GetVehicles()
+    public async Task<ActionResult<IEnumerable<Vehicle>>> GetAsync()
     {
         return await _context.Vehicles.ToListAsync();
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<Vehicle>> GetVehicle(int id)
+    public async Task<ActionResult<Vehicle>> GetAsync(int id)
     {
         var vehicle = await _context.Vehicles.FindAsync(id);
 
@@ -35,7 +35,7 @@ public class VehiclesController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<Vehicle>> PostVehicle(Vehicle vehicle)
+    public async Task<ActionResult<Vehicle>> PostAsync(Vehicle vehicle)
     {
         _context.Vehicles.Add(vehicle);
         await _context.SaveChangesAsync();
@@ -44,7 +44,7 @@ public class VehiclesController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> PutVehicle(int id, Vehicle vehicle)
+    public async Task<IActionResult> PutAsync(int id, Vehicle vehicle)
     {
         if (id != vehicle.VehicleId)
         {
@@ -73,7 +73,7 @@ public class VehiclesController : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteVehicle(int id)
+    public async Task<IActionResult> DeleteAsync(int id)
     {
         var vehicle = await _context.Vehicles.FindAsync(id);
         if (vehicle == null)

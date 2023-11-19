@@ -20,8 +20,8 @@ namespace CarWashing.Shared.Entities
 
         // Clave foránea para el Usuario al que se emite la factura
 
-        public String ServiceId { get; set; }
-        [JsonIgnore]
+        public int ServiceId { get; set; }    
+        
         public Service Service { get; set; }
 
         [JsonIgnore]
@@ -29,6 +29,6 @@ namespace CarWashing.Shared.Entities
 
         public User User { get; set; }
 
-        public string UserId { get; set; }
+        public int UserId { get; set; }
     }
 }

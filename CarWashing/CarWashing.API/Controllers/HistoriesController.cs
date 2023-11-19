@@ -16,13 +16,13 @@ public class HistoriesController : ControllerBase
 
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<History>>> GetHistories()
+    public async Task<ActionResult<IEnumerable<History>>> GetAsync()
     {
         return await _context.Histories.ToListAsync();
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<History>> GetHistory(int id)
+    public async Task<ActionResult<History>> GetAsync(int id)
     {
         var history = await _context.Histories.FindAsync(id);
 
@@ -35,7 +35,7 @@ public class HistoriesController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<History>> PostHistory(History history)
+    public async Task<ActionResult<History>> PostAsync(History history)
     {
         _context.Histories.Add(history);
         await _context.SaveChangesAsync();
@@ -44,7 +44,7 @@ public class HistoriesController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> PutHistory(int id, History history)
+    public async Task<IActionResult> PutAsync(int id, History history)
     {
         if (id != history.HistoryId)
         {
@@ -73,7 +73,7 @@ public class HistoriesController : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteHistory(int id)
+    public async Task<IActionResult> DeleteAsync(int id)
     {
         var history = await _context.Histories.FindAsync(id);
         if (history == null)

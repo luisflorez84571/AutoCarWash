@@ -1,22 +1,18 @@
 ﻿@page "/services/create"
-@using CarWashing.Shared.Entities;
 @inject IRepository repository
 @inject NavigationManager navigationManager
 @inject SweetAlertService sweetAlertService
 
 <h3>Crear Servicio</h3>
 
-<ServiceForm @ref="serviceForm" Service="service" OnValidSubmit="CreateAsync" ReturnAction="Return" />
+
+<ServiceForm @ref="serviceForm" Service="service" OnValidSubmit="Create" ReturnAction="Return" />
 
 @code {
     private Service service = new();
-    private const string Uri = "/services";
     private ServiceForm serviceForm;
 
-    [CascadingParameter]
-    BlazoredModalInstance BlazoredModal { get; set; } = default!;
-
-    private async Task CreateAsync()
+    private async Task Create()
     {
         var responseHttp = await repository.Post("/api/services", service);
         if (responseHttp.Error)
@@ -25,9 +21,13 @@
             await sweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
             return;
         }
-        await BlazoredModal.CloseAsync(ModalResult.Ok());
-        Return();
+        serviceForm!.FormPostedSuccessfully = true;
+        navigationManager.NavigateTo("/services");        
     }
-
-    private void Return() => navigationManager.NavigateTo(Uri);
+    private void Return()
+    {
+        serviceForm!.FormPostedSuccessfully = true;
+        navigationManager.NavigateTo("/services");
+    }
+  
 }

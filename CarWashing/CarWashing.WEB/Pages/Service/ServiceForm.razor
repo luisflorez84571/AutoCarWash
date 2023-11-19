@@ -1,7 +1,7 @@
 ﻿@inject SweetAlertService sweetAlertService
 
 <NavigationLock OnBeforeInternalNavigation="OnBeforeInternalNavigation" />
-<EditForm EditContext="editContext" OnValidSubmit="OnValidSubmit">
+<EditForm Model="Service" OnValidSubmit="OnValidSubmit">
     <DataAnnotationsValidator />
     <div class="mb-3">
         <h3>Tipo de Servicio:</h3>        
@@ -12,7 +12,8 @@
             <option value="motor">Lavada de motor</option>
             <option value="brillada">Brillada</option>
         </InputSelect>
-                
+        <ValidationMessage For="@(() => Service.User)"/>            
+        
         @if (!string.IsNullOrEmpty(Service.Servicio))
         {
             <p>Seleccionaste: @Service.Servicio</p>
@@ -129,7 +130,8 @@
                 precioCalculado = 0;
             }
             <h3>El valor es: @precioCalculado</h3>
-            <button class="btn btn-primary" type="submit">Aceptar y Guardar</button>            
+            <button class="btn btn-primary" type="submit">Aceptar y Guardar</button>
+            <button class="btn btn-success" @onclick="ReturnAction">Aceptar y Guardar</button>            
             <ValidationMessage For="@(() => precioCalculado)" />
         }       
         

@@ -44,8 +44,6 @@ namespace CarWashing.Shared.Entities
         public ICollection<Bill> Bills { get; set; }
         public ICollection<History> Histories { get; set; }
 
-
-
     }
 
 }

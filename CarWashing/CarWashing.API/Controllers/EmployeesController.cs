@@ -16,13 +16,13 @@ public class EmployeesController : ControllerBase
 
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Employee>>> GetEmployees()
+    public async Task<ActionResult<IEnumerable<Employee>>> GetAsync()
     {
         return await _context.Employees.ToListAsync();
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<Employee>> GetEmployee(int id)
+    public async Task<ActionResult<Employee>> GetAsync(int id)
     {
         var employee = await _context.Employees.FindAsync(id);
 
@@ -35,7 +35,7 @@ public class EmployeesController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<Employee>> PostEmployee(Employee employee)
+    public async Task<ActionResult<Employee>> PostAsync(Employee employee)
     {
         _context.Employees.Add(employee);
         await _context.SaveChangesAsync();
@@ -44,7 +44,7 @@ public class EmployeesController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> PutEmployee(int id, Employee employee)
+    public async Task<IActionResult> PutAsync(int id, Employee employee)
     {
         if (id != employee.EmployeeId)
         {
@@ -73,7 +73,7 @@ public class EmployeesController : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteEmployee(int id)
+    public async Task<IActionResult> DeleteAsync(int id)
     {
         var employee = await _context.Employees.FindAsync(id);
         if (employee == null)

@@ -18,12 +18,13 @@ namespace CarWashing.Shared.Entities
         public TimeSpan Hour { get; set; }
 
         public User User { get; set; }
-        public string UserId { get; set; }
-        public string VehicleId { get; set; }
+        public int UserId { get; set; }
+
+        public int VehicleId { get; set; }
         [JsonIgnore]
         public Vehicle Vehicle { get; set; }
 
-        public String ServiceId { get; set; }
+        public int ServiceId { get; set; }
         [JsonIgnore]
         public Service Service { get; set; }
 

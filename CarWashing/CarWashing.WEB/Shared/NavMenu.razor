@@ -1,7 +1,6 @@
 ﻿<div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href=""><h4>AutCarWash</h4></a>
-        <!--alt="Logo" width="190px" height="120px" border="3px"-->
+        <a class="navbar-brand" href="">AutCarWash</a>
         <img src="https://previews.123rf.com/images/sodesignby/sodesignby1607/sodesignby160700048/60325898-dise%C3%B1o-de-lavado-de-autos-sobre-fondo-claro.jpg" alt="Logo" width="190px" height="113px" border="3px" />
         <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
             <span class="navbar-toggler-icon"></span>
@@ -23,74 +22,67 @@
         <AuthorizeView Roles="Admin">
             <Authorized>
                 <div class="nav-item px-3">
-                    <NavLink class="nav-link" href="users">
+                    <NavLink class="nav-link" href="/users">
                         <span class="oi oi-account-login" aria-hidden="true"></span> Usuario
                     </NavLink>
-                </div>
+                </div>                
 
                 <div class="nav-item px-3">
-                    <NavLink class="nav-link" href="clients">
-                        <span class="oi oi-person" aria-hidden="true"></span> Cliente
-                    </NavLink>
-                </div>
-
-                <div class="nav-item px-3">
-                    <NavLink class="nav-link" href="employees">
+                    <NavLink class="nav-link" href="/employees">
                         <span class="oi oi-person" aria-hidden="true"></span> Empleados
                     </NavLink>
                 </div>
 
                 <div class="nav-item px-3">
-                    <NavLink class="nav-link" href="vehicles">
+                    <NavLink class="nav-link" href="/vehicles">
                         <span class="oi oi-eye" aria-hidden="true"></span> Vehiculo
                     </NavLink>
                 </div>
                 <div class="nav-item px-3">
-                    <NavLink class="nav-link" href="services">
+                    <NavLink class="nav-link" href="/services">
                         <span class="oi oi-cart" aria-hidden="true"></span> Servicio
                     </NavLink>
                 </div>
                 <div class="nav-item px-3">
-                    <NavLink class="nav-link" href="bills">
+                    <NavLink class="nav-link" href="/bills">
                         <span class="oi oi-list-rich" aria-hidden="true"></span> Facturas
                     </NavLink>
                 </div>
                 
                 <div class="nav-item px-3">
-                    <NavLink class="nav-link" href="histories">
+                    <NavLink class="nav-link" href="/histories">
                         <span class="oi oi-list-rich" aria-hidden="true"></span> Historial
                     </NavLink>
                 </div>              
 
                 <div class="nav-item px-3">
-                    <NavLink class="nav-link" href="schedulings">
+                    <NavLink class="nav-link" href="/schedulings">
                         <span class="oi oi-calendar" aria-hidden="true"></span> Agendamiento
                     </NavLink>
                 </div>
                 
-            </Authorized>
+           </Authorized>
         </AuthorizeView>
         <AuthorizeView Roles="User">
-            <Authorized>
+                    <Authorized>
                 <div class="nav-item px-3">
-                    <NavLink class="nav-link" href="services">
+                    <NavLink class="nav-link" href="/services">
                         <span class="oi oi-cart" aria-hidden="true"></span> Servicio
                     </NavLink>
                 </div>
                 <div class="nav-item px-3">
-                    <NavLink class="nav-link" href="schedulings">
+                    <NavLink class="nav-link" href="/schedulings">
                         <span class="oi oi-calendar" aria-hidden="true"></span> Agendamiento
                     </NavLink>
                 </div>
-            </Authorized>
-        </AuthorizeView>
+                 </Authorized>
+                </AuthorizeView>
     </nav>
 </div>
-
 @code {
     private bool collapseNavMenu = true;
 
-    private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
 
     private void ToggleNavMenu()
     {

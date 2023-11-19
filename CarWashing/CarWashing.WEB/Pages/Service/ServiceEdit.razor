@@ -7,7 +7,7 @@
 
 @if (service is null)
 {
-    <div class="spinner" />
+    <p>Cargando...</p>
 }
 else
 {
@@ -15,14 +15,16 @@ else
 }
 
 @code {
-    private Service? service;
-    private ServiceForm? serviceForm;
+    private Service service;
+    private ServiceForm serviceForm;
+
+    [Parameter]
+    public int ServiceId { get; set; }    
 
     [CascadingParameter]
     BlazoredModalInstance BlazoredModal { get; set; } = default!;
 
-    [Parameter]
-    public int ServiceId { get; set; }
+    
 
     protected override async Task OnInitializedAsync()
     {
