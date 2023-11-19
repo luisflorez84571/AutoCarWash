@@ -10,9 +10,9 @@ namespace CarWashing.WEB.Auth
             var anonimous = new ClaimsIdentity();
             var zuluUser = new ClaimsIdentity(new List<Claim>
             {
-                new Claim("FirstName", "Juan"),
-                new Claim("LastName", "Zulu"),
-                new Claim(ClaimTypes.Name, "zulu@yopmail.com"),
+                new Claim("FirstName", "Luis"),
+                new Claim("LastName", "Florez"),
+                new Claim(ClaimTypes.Name, "pinaef87@hotmail.com"),
                 new Claim(ClaimTypes.Role, "Admin")
             },
             authenticationType: "test");

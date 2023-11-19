@@ -6,24 +6,27 @@
 
 <h3>Crear Servicio</h3>
 
-<ServiceForm @ref="serviceForm" Service="service" OnSubmit="Create" ReturnAction="Return" />
+<ServiceForm @ref="serviceForm" Service="service" OnValidSubmit="CreateAsync" ReturnAction="Return" />
 
 @code {
     private Service service = new();
     private const string Uri = "/services";
     private ServiceForm serviceForm;
 
-    private async Task Create()
+    [CascadingParameter]
+    BlazoredModalInstance BlazoredModal { get; set; } = default!;
+
+    private async Task CreateAsync()
     {
         var responseHttp = await repository.Post("/api/services", service);
         if (responseHttp.Error)
         {
             var message = await responseHttp.GetErrorMessageAsync();
-            await sweetAlertService.FireAsync("Error", message);
+            await sweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
             return;
         }
-        serviceForm!.FormPostedSuccessfully = true;
-        navigationManager.NavigateTo("/services");
+        await BlazoredModal.CloseAsync(ModalResult.Ok());
+        Return();
     }
 
     private void Return() => navigationManager.NavigateTo(Uri);

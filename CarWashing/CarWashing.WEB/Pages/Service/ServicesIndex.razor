@@ -2,63 +2,152 @@
 
 @inject IRepository repository
 @inject NavigationManager navigationManager
-@inject SweetAlertService swal
+@inject SweetAlertService sweetAlertService
+@attribute [Authorize(Roles = "Admin")]
 
-<h3>Servicio</h3>
+@if (services is null)
+{
+    <div class="spinner" />
+}
+else
+{
+    <GenericList MyList="services">
+        <Body>
+            <div class="card">
+                <div class="card-header">
+                    <span>
+                        <i class="oi oi-list"></i> Servicios
+                        <a class="btn btn-sm btn-primary float-end" @onclick=@(() => ShowModal())><i class="oi oi-plus"></i> Adicionar Servicio</a>
+                    </span>
+                </div>
+                <div class="card-body">
+                    <div class="mb-2" style="display: flex; flex-wrap:wrap; align-items: center;">
+                        <div>
+                            <input style="width: 400px;" type="text" class="form-control" id="titulo" placeholder="Buscar categoría..." @bind-value="Filter" />
+                        </div>
+                        <div class="mx-1">
+                            <button type="button" class="btn btn-outline-primary" @onclick="ApplyFilterAsync"><i class="oi oi-layers" /> Filtrar</button>
+                            <button type="button" class="btn btn-outline-danger" @onclick="CleanFilterAsync"><i class="oi oi-ban" /> Limpiar</button>
+                        </div>
+                    </div>
 
-<div class="mb-3">
-    <a class="btn btn-primary" href="/services/create">Nuevo Servicio</a>
-</div>
+                    <Pagination CurrentPage="currentPage"
+                            TotalPages="totalPages"
+                            SelectedPage="SelectedPageAsync" />
 
-<GenericList MyList="Services">
-
-    <Body>
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Service</th>
-                    <th></th>
-
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var service in Services!)
-                {
-                    <tr>
-                        <td>
-                            @service.ServiceId
-                        </td>
-                        <td>
-                            <a href="/services/edit/@service.ServiceId" class="btn btn-warning">Editar</a>
-                            <button class="btn btn-danger" @onclick=@(() => Delete(service))>Borrar</button>
-                        </td>
-
-                    </tr>
-                }
-            </tbody>
-        </table>
-
-    </Body>
-
-</GenericList>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Servicio</th>
+                                <th style="width:200px"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var service in services)
+                            {
+                                <tr>
+                                    <td>
+                                        @service.Vehiculo
+                                    </td>
+                                    <td>
+                                        <a @onclick=@(() => ShowModal(service.ServiceId, true)) class="btn btn-warning"><i class="oi oi-pencil" /> Editar</a>
+                                        <button class="btn btn-danger" @onclick=@(() => Delete(service.ServiceId))><i class="oi oi-trash" /> Borrar</button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </Body>
+    </GenericList>
+}
 
 @code {
-    public List<Service> Services { get; set; }
+    public List<Service> services { get; set; }
+    private int currentPage = 1;
+    private int totalPages;
+
+    [CascadingParameter]
+    IModalService Modal { get; set; } = default!;
+
+    [Parameter]
+    [SupplyParameterFromQuery]
+    public string Page { get; set; } = "";
+
+    [Parameter]
+    [SupplyParameterFromQuery]
+    public string Filter { get; set; } = "";
 
     protected async override Task OnInitializedAsync()
     {
-        await Load();
+        await LoadAsync();
     }
 
-    private async Task Load()
+    private async Task ShowModal(int id = 0, bool isEdit = false)
     {
-        var responseHppt = await repository.Get<List<Service>>("/api/services");
-        Services = responseHppt.Response!;
+        IModalReference modalReference;
+
+        if (isEdit)
+        {
+            modalReference = Modal.Show<ServiceEdit>(string.Empty, new ModalParameters().Add("ServiceId", id));
+        }
+        else
+        {
+            modalReference = Modal.Show<ServiceCreate>();
+        }
+
+        var result = await modalReference.Result;
+        if (result.Confirmed)
+        {
+            await LoadAsync();
+        }
     }
 
-    private async Task Delete(Service service)
+
+    private async Task SelectedPageAsync(int page)
     {
-        var result = await swal.FireAsync(new SweetAlertOptions
+        currentPage = page;
+        await LoadAsync(page);
+    }
+
+    private async Task LoadAsync(int page = 1)
+    {
+        if (!string.IsNullOrWhiteSpace(Page))
+        {
+            page = Convert.ToInt32(Page);
+        }
+
+        string url1 = string.Empty;
+        string url2 = string.Empty;
+
+        if (string.IsNullOrEmpty(Filter))
+        {
+            url1 = $"api/services?page={page}";
+            url2 = $"api/services/totalPages";
+        }
+        else
+        {
+            url1 = $"api/services?page={page}&filter={Filter}";
+            url2 = $"api/services/totalPages?filter={Filter}";
+        }
+
+        try
+        {
+            var responseHppt = await repository.Get<List<Service>>(url1);
+            var responseHppt2 = await repository.Get<int>(url2);
+            services = responseHppt.Response!;
+            totalPages = responseHppt2.Response!;
+        }
+        catch (Exception ex)
+        {
+            await sweetAlertService.FireAsync("Error", ex.Message, SweetAlertIcon.Error);
+        }
+    }
+
+    private async Task Delete(int categoryId)
+    {
+        var result = await sweetAlertService.FireAsync(new SweetAlertOptions
             {
                 Title = "Confirmación",
                 Text = "¿Esta seguro que quieres borrar el registro?",
@@ -73,7 +162,7 @@
             return;
         }
 
-        var responseHTTP = await repository.Delete($"/api/services/{service.ServiceId}");
+        var responseHTTP = await repository.Delete($"api/services/{ServiceId}");
 
         if (responseHTTP.Error)
         {
@@ -84,16 +173,27 @@
             else
             {
                 var mensajeError = await responseHTTP.GetErrorMessageAsync();
-                await swal.FireAsync("Error", mensajeError, SweetAlertIcon.Error);
+                await sweetAlertService.FireAsync("Error", mensajeError, SweetAlertIcon.Error);
             }
         }
         else
         {
-            await Load();
+            await LoadAsync();
         }
     }
 
-}
+    private async Task CleanFilterAsync()
+    {
+        Filter = string.Empty;
+        await ApplyFilterAsync();
+    }
 
+    private async Task ApplyFilterAsync()
+    {
+        int page = 1;
+        await LoadAsync(page);
+        await SelectedPageAsync(page);
+    }
+}
 
 
