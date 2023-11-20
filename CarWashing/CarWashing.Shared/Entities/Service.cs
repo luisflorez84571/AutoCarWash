@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
 
 namespace CarWashing.Shared.Entities
 {
@@ -24,6 +23,6 @@ namespace CarWashing.Shared.Entities
 
         public User User { get; set; }
         public int UserId { get; set; }
-        
+
     }
 }

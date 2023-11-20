@@ -32,7 +32,7 @@ else
 
                     <Pagination CurrentPage="currentPage"
                             TotalPages="totalPages"
-                            SelectedPage="SelectedPage" />
+                                SelectedPage="SelectedPageAsync" />
 
                     <table class="table table-striped">
                         <thead>
@@ -86,7 +86,7 @@ else
         await LoadAsync();
     }
 
-    private async Task SelectedPage(int page)
+    private async Task SelectedPageAsync(int page)
     {
         currentPage = page;
         await LoadAsync(page);

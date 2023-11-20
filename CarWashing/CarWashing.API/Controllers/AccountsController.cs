@@ -164,8 +164,7 @@ namespace CarWashing.API.Controllers
 
             if (!string.IsNullOrWhiteSpace(pagination.Filter))
             {
-                queryable = queryable.Where(x => x.FirstName.ToLower().Contains(pagination.Filter.ToLower()) ||
-                                                 x.LastName.ToLower().Contains(pagination.Filter.ToLower()));
+                queryable = queryable.Where(x => x.FirstName.ToLower().Contains(pagination.Filter.ToLower()) || x.LastName.ToLower().Contains(pagination.Filter.ToLower()));
             }
 
             return Ok(await queryable
