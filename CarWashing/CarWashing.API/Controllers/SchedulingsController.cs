@@ -16,13 +16,13 @@ public class SchedulingsController : ControllerBase
 
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Scheduling>>> GetSchedulings()
+    public async Task<ActionResult<IEnumerable<Scheduling>>> GetAsync()
     {
         return await _context.Schedulings.ToListAsync();
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<Scheduling>> GetScheduling(int id)
+    public async Task<ActionResult<Scheduling>> GetAsync(int id)
     {
         var scheduling = await _context.Schedulings.FindAsync(id);
 
@@ -35,7 +35,7 @@ public class SchedulingsController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<Scheduling>> PostScheduling(Scheduling scheduling)
+    public async Task<ActionResult<Scheduling>> PostAsync(Scheduling scheduling)
     {
         _context.Schedulings.Add(scheduling);
         await _context.SaveChangesAsync();
@@ -44,7 +44,7 @@ public class SchedulingsController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> PutScheduling(int id, Scheduling scheduling)
+    public async Task<IActionResult> PutAsync(int id, Scheduling scheduling)
     {
         if (id != scheduling.SchedulingId)
         {
@@ -73,7 +73,7 @@ public class SchedulingsController : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteScheduling(int id)
+    public async Task<IActionResult> DeleteAsync(int id)
     {
         var scheduling = await _context.Schedulings.FindAsync(id);
         if (scheduling == null)

@@ -1,8 +1,7 @@
-﻿@using CarWashing.Shared.Entities;
-@inject SweetAlertService swal
+﻿@inject SweetAlertService sweetAlertService
 
 <NavigationLock OnBeforeInternalNavigation="OnBeforeInternalNavigation"></NavigationLock>
-<EditForm EditContext="editContext" OnSubmit="OnSubmit">
+<EditForm EditContext="editContext" OnValidSubmit="OnValidSubmit">
     <DataAnnotationsValidator />
     <div class="mb-3">
         <label>Marca:</label>
@@ -32,15 +31,7 @@
 
 @code {
 
-
     private EditContext editContext = null!;
-
-    protected override void OnInitialized()
-    {
-        editContext = new(Vehicle);
-
-    }
-
 
     [EditorRequired]
     [Parameter]
@@ -48,7 +39,7 @@
 
     [EditorRequired]
     [Parameter]
-    public EventCallback OnSubmit { get; set; }
+    public EventCallback OnValidSubmit { get; set; }
 
     [EditorRequired]
     [Parameter]
@@ -56,6 +47,12 @@
 
     public bool FormPostedSuccessfully { get; set; } = false;
 
+    protected override void OnInitialized()
+    {
+        editContext = new(Vehicle);
+
+    }
+    
     private async Task OnBeforeInternalNavigation(LocationChangingContext context)
     {
         var formWasEdited = editContext.IsModified();
@@ -70,12 +67,14 @@
             return;
         }
 
-        var result = await swal.FireAsync(new SweetAlertOptions
+        var result = await sweetAlertService.FireAsync(new SweetAlertOptions
             {
                 Title = "Confirmación",
                 Text = "¿Deseas abandonar la página y perder los cambios?",
-                Icon = SweetAlertIcon.Warning,
-                ShowCancelButton = true
+                Icon = SweetAlertIcon.Question,
+                ShowCancelButton = true,
+                CancelButtonText = "No",
+                ConfirmButtonText = "Si"
             });
 
         var confirm = !string.IsNullOrEmpty(result.Value);

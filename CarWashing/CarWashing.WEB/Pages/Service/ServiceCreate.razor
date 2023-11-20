@@ -1,16 +1,15 @@
 ﻿@page "/services/create"
-@using CarWashing.Shared.Entities;
 @inject IRepository repository
 @inject NavigationManager navigationManager
 @inject SweetAlertService sweetAlertService
 
 <h3>Crear Servicio</h3>
 
-<ServiceForm @ref="serviceForm" Service="service" OnSubmit="Create" ReturnAction="Return" />
+
+<ServiceForm @ref="serviceForm" Service="service" OnValidSubmit="Create" ReturnAction="Return" />
 
 @code {
     private Service service = new();
-    private const string Uri = "/services";
     private ServiceForm serviceForm;
 
     private async Task Create()
@@ -19,12 +18,16 @@
         if (responseHttp.Error)
         {
             var message = await responseHttp.GetErrorMessageAsync();
-            await sweetAlertService.FireAsync("Error", message);
+            await sweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
             return;
         }
         serviceForm!.FormPostedSuccessfully = true;
+        navigationManager.NavigateTo("/services");        
+    }
+    private void Return()
+    {
+        serviceForm!.FormPostedSuccessfully = true;
         navigationManager.NavigateTo("/services");
     }
-
-    private void Return() => navigationManager.NavigateTo(Uri);
+  
 }

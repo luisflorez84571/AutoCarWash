@@ -19,15 +19,21 @@ namespace CarWashing.API.Controllers
     {
         private readonly IUserHelper _userHelper;
         private readonly IConfiguration _configuration;
+        private readonly IFileStorage _fileStorage;
         private readonly IMailHelper _mailHelper;
         private readonly DataContext _context;
+        private readonly string _container;
 
-        public AccountsController(IUserHelper userHelper, IConfiguration configuration, IMailHelper mailHelper, DataContext context)
+
+        public AccountsController(IUserHelper userHelper, IConfiguration configuration, IFileStorage fileStorage, IMailHelper mailHelper, DataContext context)
         {
             _userHelper = userHelper;
             _configuration = configuration;
+            _fileStorage = fileStorage;
             _mailHelper = mailHelper;
             _context = context;
+            _container = "users";
+
         }
 
         [HttpPost("RecoverPassword")]
@@ -52,14 +58,56 @@ namespace CarWashing.API.Controllers
                 $"<p>Para recuperar su contraseña, por favor hacer clic 'Recuperar Contraseña':</p>" +
                 $"<b><a href ={tokenLink}>Recuperar Contraseña</a></b>");
 
-            if (response.WasSuccess)
+            if (response.IsSuccess)
             {
                 return NoContent();
             }
 
             return BadRequest(response.Message);
         }
-        
+
+        [HttpPost("ResetPassword")]
+        public async Task<ActionResult> ResetPassword([FromBody] ResetPasswordDTO model)
+        {
+            User user = await _userHelper.GetUserAsync(model.Email);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var result = await _userHelper.ResetPasswordAsync(user, model.Token, model.Password);
+            if (result.Succeeded)
+            {
+                return NoContent();
+            }
+
+            return BadRequest(result.Errors.FirstOrDefault()!.Description);
+        }
+
+        [HttpPost("changePassword")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<ActionResult> ChangePasswordAsync(ChangePasswordDTO model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var user = await _userHelper.GetUserAsync(User.Identity!.Name!);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var result = await _userHelper.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
+            if (!result.Succeeded)
+            {
+                return BadRequest(result.Errors.FirstOrDefault()!.Description);
+            }
+
+            return NoContent();
+        }
+
         [HttpPut]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult> Put(User user)
@@ -69,6 +117,8 @@ namespace CarWashing.API.Controllers
                 if (!string.IsNullOrEmpty(user.Photo))
                 {
                     var photoUser = Convert.FromBase64String(user.Photo);
+                    user.Photo = await _fileStorage.SaveFileAsync(photoUser, ".jpg", _container);
+
                 }
 
                 var currentUser = await _userHelper.GetUserAsync(user.Email!);
@@ -87,7 +137,7 @@ namespace CarWashing.API.Controllers
                 var result = await _userHelper.UpdateUserAsync(currentUser);
                 if (result.Succeeded)
                 {
-                    return Ok(currentUser);
+                    return Ok(BuildToken(currentUser));
                 }
 
                 return BadRequest(result.Errors.FirstOrDefault());
@@ -114,13 +164,13 @@ namespace CarWashing.API.Controllers
 
             if (!string.IsNullOrWhiteSpace(pagination.Filter))
             {
-                queryable = queryable.Where(x => x.FirstName.ToLower().Contains(pagination.Filter.ToLower()) ||
-                                                 x.LastName.ToLower().Contains(pagination.Filter.ToLower()));
+                queryable = queryable.Where(x => x.FirstName.ToLower().Contains(pagination.Filter.ToLower()) || x.LastName.ToLower().Contains(pagination.Filter.ToLower()));
             }
 
             return Ok(await queryable
                 .OrderBy(x => x.FirstName)
                 .ThenBy(x => x.LastName)
+                .Paginate(pagination)
                 .ToListAsync());
         }
 
@@ -147,6 +197,8 @@ namespace CarWashing.API.Controllers
             if (!string.IsNullOrEmpty(model.Photo))
             {
                 var photoUser = Convert.FromBase64String(model.Photo);
+                model.Photo = await _fileStorage.SaveFileAsync(photoUser, ".jpg", _container);
+
             }
 
             var result = await _userHelper.AddUserAsync(user, model.Password);
@@ -166,7 +218,7 @@ namespace CarWashing.API.Controllers
                     $"<p>Para habilitar el usuario, por favor hacer clic 'Confirmar Email':</p>" +
                     $"<b><a href ={tokenLink}>Confirmar Email</a></b>");
 
-                if (response.WasSuccess)
+                if (response.IsSuccess)
                 {
                     return NoContent();
                 }
@@ -200,7 +252,7 @@ namespace CarWashing.API.Controllers
                 $"<p>Para habilitar el usuario, por favor hacer clic 'Confirmar Email':</p>" +
                 $"<b><a href ={tokenLink}>Confirmar Email</a></b>");
 
-            if (response.WasSuccess)
+            if (response.IsSuccess)
             {
                 return NoContent();
             }
@@ -249,5 +301,35 @@ namespace CarWashing.API.Controllers
 
             return BadRequest("Email o contraseña incorrectos.");
         }
+        private TokenDTO BuildToken(User user)
+        {
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, user.Email!),
+                new Claim(ClaimTypes.Role, user.UserType.ToString()),
+                new Claim("Document", user.Document),
+                new Claim("FirstName", user.FirstName),
+                new Claim("LastName", user.LastName),
+                new Claim("Address", user.Address),
+                new Claim("Photo", user.Photo ?? string.Empty),
+            };
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["jwtKey"]!));
+            var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            var expiration = DateTime.UtcNow.AddDays(30);
+            var token = new JwtSecurityToken(
+                issuer: null,
+                audience: null,
+                claims: claims,
+                expires: expiration,
+                signingCredentials: credentials);
+
+            return new TokenDTO
+            {
+                Token = new JwtSecurityTokenHandler().WriteToken(token),
+                Expiration = expiration
+            };
+        }
+
     }
 }

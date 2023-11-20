@@ -1,6 +1,6 @@
-﻿using CarWashing.Shared.Entities;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using CarWashing.Shared.Entities;
 
 namespace CarWashing.API.Data
 {
@@ -10,33 +10,28 @@ namespace CarWashing.API.Data
         {
 
         }
-        public DbSet<Client> Clients { get; set; }
+        
         public DbSet<Service> Services { get; set; }
+
         public DbSet<Scheduling> Schedulings { get; set; }
+
         public DbSet<Bill> Bills { get; set; }
+
         public DbSet<Employee> Employees { get; set; }
+
         public DbSet<History> Histories { get; set; }
+
         public DbSet<Vehicle> Vehicles { get; set; }
         
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);            
-            modelBuilder.Entity<Client>().HasIndex(c => c.FirstName).IsUnique();
             modelBuilder.Entity<Employee>().HasIndex(c => c.Nombre).IsUnique();
-            modelBuilder.Entity<Service>().HasIndex("ServiceId", "Servicio").IsUnique();
-            modelBuilder.Entity<Bill>().HasIndex("BillId", "ClientId", "MontoTotal").IsUnique();
-            modelBuilder.Entity<Scheduling>().HasIndex("SchedulingId", "ClientId", "VehicleId", "date").IsUnique();
-            modelBuilder.Entity<History>().HasIndex("HistoryId", "Descripcion").IsUnique();
-            DisableCascadingDelete(modelBuilder);
-        }
-        private void DisableCascadingDelete(ModelBuilder modelBuilder)
-        {
-            var relationships = modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys());
-            foreach (var relationship in relationships)
-            {
-                relationship.DeleteBehavior = DeleteBehavior.Restrict;
-            }
+            modelBuilder.Entity<Service>().HasIndex(c => c.Servicio).IsUnique();
+            modelBuilder.Entity<Scheduling>().HasIndex(c => c.date).IsUnique();
+            modelBuilder.Entity<Bill>().HasIndex("ServiceId", "UserId", "MontoTotal").IsUnique();
+            modelBuilder.Entity<History>().HasIndex("UserId", "Descripcion").IsUnique();
+           
         }
     }
-
 }

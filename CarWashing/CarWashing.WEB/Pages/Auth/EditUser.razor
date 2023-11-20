@@ -2,6 +2,8 @@
 @inject IRepository repository
 @inject SweetAlertService sweetAlertService
 @inject NavigationManager navigationManager
+@inject ILoginService loginService
+
 
 @if (user is null)
 {
@@ -76,7 +78,7 @@ else
 @code 
 {
     private User user;
-    private const string V = "/api/clients";
+    private const string V = "/api/users";
     private string imageUrl;
 
     protected override async Task OnInitializedAsync()
@@ -115,13 +117,14 @@ else
     }
     private async Task SaveUserAsync()
     {
-        var responseHttp = await repository.Put<User>("/api/accounts", user!);
+        var responseHttp = await repository.Put<User, TokenDTO>("/api/accounts", user!);
         if (responseHttp.Error)
         {
             var message = await responseHttp.GetErrorMessageAsync();
             await sweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
             return;
         }
+        await loginService.LoginAsync(responseHttp.Response!.Token);
         navigationManager.NavigateTo("/");
     }
 }

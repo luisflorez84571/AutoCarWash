@@ -1,95 +1,154 @@
-﻿using CarWashing.API.Data;
-using CarWashing.Shared.Entities;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using CarWashing.API.Data;
+using CarWashing.API.Helpers;
+using CarWashing.Shared.DTOs;
+using CarWashing.Shared.Entities;
 
-[Route("/api/services")]
-[ApiController]
-public class ServicesController : ControllerBase
+namespace CarWashing.API.Controllers
 {
-    private readonly DataContext _context;
-
-    public ServicesController(DataContext context)
+    [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Route("/api/services")]
+    public class ServicesController : ControllerBase
     {
-        _context = context;
-    }
+        private readonly DataContext _context;
 
-    [HttpGet]
-    public async Task<ActionResult<IEnumerable<Service>>> GetServices()
-    {
-        return await _context.Services.ToListAsync();
-    }
-
-    [HttpGet("{id}")]
-    public async Task<ActionResult<Service>> GetService(int id)
-    {
-        var service = await _context.Services.FindAsync(id);
-
-        if (service == null)
+        public ServicesController(DataContext context)
         {
-            return NotFound();
+            _context = context;
         }
 
-        return service;
-    }
-
-    [HttpPost]
-    public async Task<ActionResult<Service>> PostService(Service service)
-    {
-        _context.Services.Add(service);
-        await _context.SaveChangesAsync();
-
-        return CreatedAtAction("GetService", new { id = service.ServiceId }, service);
-    }
-
-    [HttpPut("{id}")]
-    public async Task<IActionResult> PutService(int id, Service service)
-    {
-        if (id != service.ServiceId)
+        [AllowAnonymous]
+        [HttpGet("combo")]
+        public async Task<ActionResult> GetCombo()
         {
-            return BadRequest();
+            return Ok(await _context.Services.ToListAsync());
         }
 
-        _context.Entry(service).State = EntityState.Modified;
+        [HttpGet]
+        public async Task<IActionResult> GetAsync([FromQuery] PaginationDTO pagination)
+        {
+            var queryable = _context.Services
+                .Include(x => x.Precio)
+                .AsQueryable();
 
-        try
-        {
-            await _context.SaveChangesAsync();
+            if (!string.IsNullOrWhiteSpace(pagination.Filter))
+            {
+                queryable = queryable.Where(x => x.Servicio.ToLower().Contains(pagination.Filter.ToLower()));
+            }
+
+            return Ok(await queryable
+                .OrderBy(x => x.Precio)
+                .Paginate(pagination)
+                .ToListAsync());
         }
-        catch (DbUpdateConcurrencyException)
+
+        [HttpGet("totalPages")]
+        public async Task<ActionResult> GetPages([FromQuery] PaginationDTO pagination)
         {
-            if (!ServiceExists(id))
+            var queryable = _context.Services.AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(pagination.Filter))
+            {
+                queryable = queryable.Where(x => x.Servicio.ToLower().Contains(pagination.Filter.ToLower()));
+            }
+
+            double count = await queryable.CountAsync();
+            double totalPages = Math.Ceiling(count / pagination.RecordsNumber);
+            return Ok(totalPages);
+        }
+
+        [HttpGet("full")]
+        public async Task<IActionResult> GetFullAsync()
+        {
+            return Ok(await _context.Services
+                .Include(x => x.UserId!)                
+                .ToListAsync());
+        }
+
+        [HttpGet("{id:int}")]
+        public async Task<IActionResult> GetAsync(int id)
+        {
+            var service = await _context.Services
+                .Include(x => x.ServiceId!)                
+                .FirstOrDefaultAsync(x => x.ServiceId == id);
+            if (service == null)
             {
                 return NotFound();
             }
-            else
+
+            return Ok(service);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<Service>> PostAsync(Service service)
+        {
+            try
             {
-                throw;
+                _context.Services.Add(service);
+                await _context.SaveChangesAsync();
+                return Ok(service);
+            }
+            catch (DbUpdateException dbUpdateException)
+            {
+                if (dbUpdateException.InnerException!.Message.Contains("duplicate"))
+                {
+                    return BadRequest("Ya existe un país con el mismo nombre.");
+                }
+
+                return BadRequest(dbUpdateException.Message);
+            }
+            catch (Exception exception)
+            {
+                return BadRequest(exception.Message);
             }
         }
 
-        return NoContent();
-    }
-
-    private bool ServiceExists(int id)
-    {
-        throw new NotImplementedException();
-    }
-
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteService(int id)
-    {
-        var service = await _context.Services.FindAsync(id);
-        if (service == null)
+        [HttpPut]
+        public async Task<IActionResult> PutAsync(Service service)
         {
-            return NotFound();
+            try
+            {
+                _context.Update(service);
+                await _context.SaveChangesAsync();
+                return Ok(service);
+            }
+            catch (DbUpdateException dbUpdateException)
+            {
+                if (dbUpdateException.InnerException!.Message.Contains("duplicate"))
+                {
+                    return BadRequest("Ya existe un país con el mismo nombre.");
+                }
+
+                return BadRequest(dbUpdateException.Message);
+            }
+            catch (Exception exception)
+            {
+                return BadRequest(exception.Message);
+            }
         }
 
-        _context.Services.Remove(service);
-        await _context.SaveChangesAsync();
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> DeleteAsync(int id)
+        {
+            var service = await _context.Services.FirstOrDefaultAsync(x => x.ServiceId == id);
+            if (service == null)
+            {
+                return NotFound();
+            }
 
-        return NoContent();
+            _context.Services.Remove(service);
+            await _context.SaveChangesAsync();
+            return NoContent();
+        }
+
     }
 
 }
+
+
+
 

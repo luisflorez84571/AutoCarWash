@@ -1,4 +1,6 @@
 ﻿using CarWashing.API.Data;
+using CarWashing.API.Helpers;
+using CarWashing.Shared.DTOs;
 using CarWashing.Shared.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -16,13 +18,36 @@ public class HistoriesController : ControllerBase
 
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<History>>> GetHistories()
+    public async Task<IActionResult> GetAsync([FromQuery] PaginationDTO pagination)
     {
-        return await _context.Histories.ToListAsync();
+        var queryable = _context.Histories
+            .Include(x => x.Histories)
+            .AsQueryable();
+
+        return Ok(await queryable
+            .OrderBy(x => x.Fecha)
+            .Paginate(pagination)
+            .ToListAsync());
+    }
+
+    [HttpGet("totalPages")]
+    public async Task<ActionResult> GetPages([FromQuery] PaginationDTO pagination)
+    {
+        var queryable = _context.Users.AsQueryable();
+
+        if (!string.IsNullOrWhiteSpace(pagination.Filter))
+        {
+            queryable = queryable.Where(x => x.FirstName.ToLower().Contains(pagination.Filter.ToLower()) ||
+                                             x.LastName.ToLower().Contains(pagination.Filter.ToLower()));
+        }
+
+        double count = await queryable.CountAsync();
+        double totalPages = Math.Ceiling(count / pagination.RecordsNumber);
+        return Ok(totalPages);
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<History>> GetHistory(int id)
+    public async Task<ActionResult<History>> GetAsync(int id)
     {
         var history = await _context.Histories.FindAsync(id);
 
@@ -35,7 +60,7 @@ public class HistoriesController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<History>> PostHistory(History history)
+    public async Task<ActionResult<History>> PostAsync(History history)
     {
         _context.Histories.Add(history);
         await _context.SaveChangesAsync();
@@ -44,7 +69,7 @@ public class HistoriesController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> PutHistory(int id, History history)
+    public async Task<IActionResult> PutAsync(int id, History history)
     {
         if (id != history.HistoryId)
         {
@@ -73,7 +98,7 @@ public class HistoriesController : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteHistory(int id)
+    public async Task<IActionResult> DeleteAsync(int id)
     {
         var history = await _context.Histories.FindAsync(id);
         if (history == null)

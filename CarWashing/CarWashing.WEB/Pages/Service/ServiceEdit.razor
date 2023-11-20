@@ -1,20 +1,17 @@
-﻿@page "/services/edit/{Id:int}"
-@using CarWashing.Shared.Entities;
+﻿@page "/services/edit/{ServiceId:int}"
 @inject NavigationManager navigationManager
 @inject IRepository repository
-@inject SweetAlertService swal
+@inject SweetAlertService sweetAlertService
 
 <h3>Editar Servicio</h3>
 
 @if (service is null)
 {
-    <div class="align-items-center">
-        <img src=" https://media.tenor.com/oGoY4h0pGYUAAAAj/updatess.gif " />
-    </div>
+    <p>Cargando...</p>
 }
 else
 {
-    <ServiceForm @ref="serviceForm" Service="service" OnSubmit="Edit" ReturnAction="Return" />
+    <ServiceForm @ref="serviceForm" Service="service" OnValidSubmit="EditAsync" ReturnAction="Return" />
 }
 
 @code {
@@ -22,48 +19,49 @@ else
     private ServiceForm serviceForm;
 
     [Parameter]
-    public int Id { get; set; }
+    public int ServiceId { get; set; }    
+
+    [CascadingParameter]
+    BlazoredModalInstance BlazoredModal { get; set; } = default!;
+
+    
 
     protected override async Task OnInitializedAsync()
     {
-        var responseHTTP = await repository.Get<Service>($"api/services/{Id}");
+        var responseHttp = await repository.Get<Service>($"/api/services/{ServiceId}");
+        if (responseHttp.Error)
+        {
+            if (responseHttp.HttpResponseMessage.StatusCode == HttpStatusCode.NotFound)
+            {
+                navigationManager.NavigateTo("/services");
+                return;
+            }
 
-        if (responseHTTP.Error)
-        {
-            if (responseHTTP.HttpResponseMessage.StatusCode == System.Net.HttpStatusCode.NotFound)
-            {
-                navigationManager.NavigateTo("services");
-            }
-            else
-            {
-                var messageError = await responseHTTP.GetErrorMessageAsync();
-                await swal.FireAsync("Error", messageError, SweetAlertIcon.Error);
-            }
+            var message = await responseHttp.GetErrorMessageAsync();
+            await sweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+            return;
         }
-        else
-        {
-            service = responseHTTP.Response;
-        }
+
+        service = responseHttp.Response;
     }
 
-    private async Task Edit()
+    private async Task EditAsync()
     {
-        var responseHTTP = await repository.Put("api/services", service);
+        var responseHttp = await repository.Put("/api/services", service);
+        if (responseHttp.Error)
+        {
+            var message = await responseHttp.GetErrorMessageAsync();
+            await sweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+            return;
+        }
 
-        if (responseHTTP.Error)
-        {
-            var mensajeError = await responseHTTP.GetErrorMessageAsync();
-            await swal.FireAsync("Error", mensajeError, SweetAlertIcon.Error);
-        }
-        else
-        {
-            serviceForm!.FormPostedSuccessfully = true;
-            navigationManager.NavigateTo("services");
-        }
+        await BlazoredModal.CloseAsync(ModalResult.Ok());
+        Return();
     }
 
     private void Return()
     {
-        navigationManager.NavigateTo("services");
+        serviceForm!.FormPostedSuccessfully = true;
+        navigationManager.NavigateTo($"/services");
     }
 }

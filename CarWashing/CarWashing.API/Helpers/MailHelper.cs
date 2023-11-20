@@ -41,13 +41,13 @@ namespace CarWashing.API.Helpers
                     client.Disconnect(true);
                 }
 
-                return new Response { WasSuccess = true };
+                return new Response { IsSuccess = true };
             }
             catch (Exception ex)
             {
                 return new Response
                 {
-                    WasSuccess = false,
+                    IsSuccess = false,
                     Message = ex.Message,
                     Result = ex
                 };

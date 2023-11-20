@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace CarWashing.Shared.Entities
 {
@@ -28,9 +23,8 @@ namespace CarWashing.Shared.Entities
         public string NumeroPlaca { get; set; }
 
         // Clave foránea para el Cliente al que pertenece el vehículo
-        public int ClientId { get; set; }
-        [JsonIgnore]
-        public Client Client { get; set; }
+        public User User { get; set; }
+        public int UserId { get; set; }
 
         [JsonIgnore]
         public ICollection<Vehicle> Vehicles { get; set; }

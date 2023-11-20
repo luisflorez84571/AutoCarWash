@@ -16,13 +16,13 @@ public class BillsController : ControllerBase
 
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Bill>>> GetBills()
+    public async Task<ActionResult<IEnumerable<Bill>>> GetAsync()
     {
         return await _context.Bills.ToListAsync();
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<Bill>> GetBill(int id)
+    public async Task<ActionResult<Bill>> GetAsync(int id)
     {
         var bill = await _context.Bills.FindAsync(id);
 
@@ -35,7 +35,7 @@ public class BillsController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<Bill>> PostBill(Bill bill)
+    public async Task<ActionResult<Bill>> PostAsync(Bill bill)
     {
         _context.Bills.Add(bill);
         await _context.SaveChangesAsync();
@@ -44,7 +44,7 @@ public class BillsController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> PutBill(int id, Bill bill)
+    public async Task<IActionResult> PutAsync(int id, Bill bill)
     {
         if (id != bill.BillId)
         {
@@ -73,7 +73,7 @@ public class BillsController : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteBill(int id)
+    public async Task<IActionResult> DeleteAsync(int id)
     {
         var bill = await _context.Bills.FindAsync(id);
         if (bill == null)
