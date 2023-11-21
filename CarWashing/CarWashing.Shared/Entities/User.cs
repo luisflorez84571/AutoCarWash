@@ -21,11 +21,6 @@ namespace CarWashing.Shared.Entities
         [Required(ErrorMessage = "El campo {0} es obligatorio.")]
         public string LastName { get; set; } = null!;
 
-        [Display(Name = "Telefono")]
-        [MaxLength(50, ErrorMessage = "El campo {0} debe tener máximo {1} caractéres.")]
-        [Required(ErrorMessage = "El campo {0} es obligatorio.")]
-        public string Celphone { get; set; } = null!;
-
         [Display(Name = "Dirección")]
         [MaxLength(200, ErrorMessage = "El campo {0} debe tener máximo {1} caractéres.")]
         [Required(ErrorMessage = "El campo {0} es obligatorio.")]
@@ -35,15 +30,11 @@ namespace CarWashing.Shared.Entities
         public string Photo { get; set; }
 
         [Display(Name = "Tipo de usuario")]
-        public UserType UserType { get; set; }        
+        public UserType UserType { get; set; }
 
         [Display(Name = "Usuario")]
         public string FullName => $"{FirstName} {LastName}";
 
         public ICollection<Service> Services { get; set; }
-        public ICollection<Bill> Bills { get; set; }
-        public ICollection<History> Histories { get; set; }
-
     }
-
 }

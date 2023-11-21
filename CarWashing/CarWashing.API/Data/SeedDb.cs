@@ -18,7 +18,6 @@ namespace CarWashing.API.Data
         public async Task SeedAsync()
         {
             await _context.Database.EnsureCreatedAsync();
-
             await CheckRolesAsync();
             await CheckUserAsync("1017145769", "Luis", "Florez", "pinaef87@hotmail.com", "3148709090", "Calle 44 # 109", UserType.Admin);
             await CheckUserAsync("1037614071", "Isabel", "Garzon", "Isabel@hotmail.com", "322 311 4620", "Calle 44 # 109", UserType.User);
@@ -42,13 +41,13 @@ namespace CarWashing.API.Data
                     LastName = lastName,
                     Email = email,
                     UserName = email,
-                    Celphone = phone,
+                    PhoneNumber = phone,
                     Address = address,                    
                     UserType = userType,
 
                 };
 
-                await _userHelper.AddUserAsync(user, "Florez1949");
+                await _userHelper.AddUserAsync(user, "123456");
                 await _userHelper.AddUserToRoleAsync(user, userType.ToString());
 
                 var token = await _userHelper.GenerateEmailConfirmationTokenAsync(user);

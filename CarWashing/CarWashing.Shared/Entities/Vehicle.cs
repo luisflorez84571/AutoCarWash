@@ -28,5 +28,7 @@ namespace CarWashing.Shared.Entities
 
         [JsonIgnore]
         public ICollection<Vehicle> Vehicles { get; set; }
+        public ICollection<User> Users { get; set; }
+
     }
 }

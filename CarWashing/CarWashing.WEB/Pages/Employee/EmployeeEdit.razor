@@ -1,8 +1,9 @@
 ﻿@page "/employees/edit/{Id:int}"
-@using CarWashing.Shared.Entities;
 @inject NavigationManager navigationManager
 @inject IRepository repository
 @inject SweetAlertService swal
+@attribute [Authorize(Roles = "Admin")]
+
 
 <h3>Editar Employeee</h3>
 

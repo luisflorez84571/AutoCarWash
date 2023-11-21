@@ -3,6 +3,8 @@
 @inject IRepository repository
 @inject NavigationManager navigationManager
 @inject SweetAlertService sweetAlertService
+@attribute [Authorize(Roles = "Admin")]
+
 
 <h3>Empleado</h3>
 
@@ -12,6 +14,8 @@
 
 }else
 {
+    <GenericList MyList="Employees">
+        <Body>
     <div class="card">
         <div class="card-header">
             <span>
@@ -36,6 +40,7 @@
                 TotalPages="totalPages"
                 SelectedPage="SelectedPageAsync" />
 
+       
         <table class="table table-striped">
             <thead>
                 <tr>
@@ -66,6 +71,8 @@
             </tbody>
         </table>
     </div>
+    </Body>
+    </GenericList>
 }
  
 @code {    

@@ -3,21 +3,25 @@
 @inject IRepository repository
 @inject NavigationManager navigationManager
 @inject SweetAlertService sweetAlertService
+@attribute [Authorize(Roles = "Admin")]
+
 
 
 <h3>vehiculo</h3>
 
-        @if(Vehicles is null)
-        {
-            <p>Cargando...</p>
+    @if(Vehicles is null)
+    {
+        <p>Cargando...</p>
 
-        }else
-        {
+    }else
+    {
+        <GenericList MyList="Vehicles">
+         <Body>
             <div class="card">
                 <div class="card-header">
                     <span>
                         <i class="oi oi-globe"></i> Vehiculo
-                        <a class="btn btn-sm btn-primary float-end" href="/vehicles/create"><i class="oi oi-plus"></i> Adicionar Empleado</a>
+                        <a class="btn btn-sm btn-primary float-end" href="/vehicles/create"><i class="oi oi-plus"></i> Adicionar Vehiculo</a>
                     </span>
                 </div>
                 <div class="card-body">
@@ -30,19 +34,16 @@
                             <button type="button" class="btn btn-outline-danger" @onclick="CleanFilterAsync"><i class="oi oi-ban" /> Limpiar</button>
                         </div>
                     </div>
-                  </div>
+                    </div>
 
-        <Pagination CurrentPage="currentPage"
+                <Pagination CurrentPage="currentPage"
                     TotalPages="totalPages"
                     SelectedPage="SelectedPageAsync" />
 
-        <div class="mb-3">
-            <a class="btn btn-primary" href="/vehicles/create">Nuevo Vehiculo</a>
-        </div>
-
-        <GenericList MyList="Vehicles">
-
-            <Body>
+                <div class="mb-3">
+                    <a class="btn btn-primary" href="/vehicles/create">Nuevo Vehiculo</a>
+                </div>
+        
                 <table class="table table-striped">
                     <thead>
                         <tr>
@@ -69,11 +70,10 @@
                         }
                     </tbody>
                 </table>
-
-            </Body>
-
+            </div>
+           </Body>
         </GenericList>
-        </div>
+        
         }
 @code {
     private int currentPage = 1;

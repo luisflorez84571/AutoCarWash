@@ -1,12 +1,13 @@
 ﻿@page "/vehicles/create"
-@using CarWashing.Shared.Entities;
 @inject IRepository repository
 @inject NavigationManager navigationManager
 @inject SweetAlertService sweetAlertService
+@attribute [Authorize(Roles = "Admin")]
 
 <h3>Crear vehiculo</h3>
 
-<VehicleForm @ref="vehicleForm" Vehicle="vehicle" OnSubmit="Create" ReturnAction="Return" />
+<VehicleForm @ref="vehicleForm" Vehicle="vehicle" OnValidSubmit="Create" ReturnAction="Return" />
+
 
 @code {
     private Vehicle vehicle = new();
