@@ -14,7 +14,7 @@ var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
-builder.Services.AddSingleton(sp => new HttpClient { BaseAddress = new Uri("https://localhost:8000/") });
+builder.Services.AddSingleton(sp => new HttpClient { BaseAddress = new Uri("https://carwashingapi2023.azurewebsites.net/") });
 builder.Services.AddScoped<IRepository, Repository>();
 
 builder.Services.AddSweetAlert2();
