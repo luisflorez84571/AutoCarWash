@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CarWashing.API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20231122023302_InicialDB")]
+    [Migration("20231122024403_InicialDB")]
     partial class InicialDB
     {
         /// <inheritdoc />

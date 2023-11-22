@@ -19,17 +19,15 @@ namespace CarWashing.API.Controllers
     {
         private readonly IUserHelper _userHelper;
         private readonly IConfiguration _configuration;
-        private readonly IFileStorage _fileStorage;
         private readonly IMailHelper _mailHelper;
         private readonly DataContext _context;
         private readonly string _container;
 
 
-        public AccountsController(IUserHelper userHelper, IConfiguration configuration, IFileStorage fileStorage, IMailHelper mailHelper, DataContext context)
+        public AccountsController(IUserHelper userHelper, IConfiguration configuration, IMailHelper mailHelper, DataContext context)
         {
             _userHelper = userHelper;
             _configuration = configuration;
-            _fileStorage = fileStorage;
             _mailHelper = mailHelper;
             _context = context;
             _container = "users";
