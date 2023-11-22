@@ -1,8 +1,9 @@
 ﻿@page "/vehicles/edit/{Id:int}"
-@using CarWashing.Shared.Entities;
 @inject NavigationManager navigationManager
 @inject IRepository repository
-@inject SweetAlertService swal
+@inject SweetAlertService sweetAlertService
+@attribute [Authorize(Roles = "Admin")]
+
 
 <h3>Editar vehiculo</h3>
 
@@ -14,7 +15,7 @@
 }
 else
 {
-    <VehicleForm @ref="vehicleForm" Vehicle="vehicle" OnSubmit="Edit" ReturnAction="Return" />
+    <VehicleForm @ref="vehicleForm" Vehicle="vehicle" OnValidSubmit="Edit" ReturnAction="Return" />
 }
 
 @code {
@@ -37,7 +38,7 @@ else
             else
             {
                 var messageError = await responseHTTP.GetErrorMessageAsync();
-                await swal.FireAsync("Error", messageError, SweetAlertIcon.Error);
+                await sweetAlertService.FireAsync("Error", messageError, SweetAlertIcon.Error);
             }
         }
         else
@@ -53,7 +54,7 @@ else
         if (responseHTTP.Error)
         {
             var mensajeError = await responseHTTP.GetErrorMessageAsync();
-            await swal.FireAsync("Error", mensajeError, SweetAlertIcon.Error);
+            await sweetAlertService.FireAsync("Error", mensajeError, SweetAlertIcon.Error);
         }
         else
         {

@@ -21,7 +21,6 @@ namespace CarWashing.Shared.Entities
         // Clave foránea para del Vehículo.
 
         public User User { get; set; }
-
         public int UserId { get; set; }
 
         public int VehículoId { get; set; }
@@ -34,6 +33,7 @@ namespace CarWashing.Shared.Entities
 
         [JsonIgnore]
         public ICollection<History> Histories { get; set; }
+
 
     }
 }

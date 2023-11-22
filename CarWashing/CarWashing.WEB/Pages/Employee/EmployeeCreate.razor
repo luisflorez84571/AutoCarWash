@@ -1,8 +1,9 @@
 ﻿@page "/employees/create"
-@using CarWashing.Shared.Entities;
 @inject IRepository repository
 @inject NavigationManager navigationManager
 @inject SweetAlertService sweetAlertService
+@attribute [Authorize(Roles = "Admin")]
+
 
 <h3>Crear Empleado</h3>
 
