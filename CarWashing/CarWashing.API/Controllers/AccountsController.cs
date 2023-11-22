@@ -113,13 +113,7 @@ namespace CarWashing.API.Controllers
         public async Task<ActionResult> Put(User user)
         {
             try
-            {
-                if (!string.IsNullOrEmpty(user.Photo))
-                {
-                    var photoUser = Convert.FromBase64String(user.Photo);
-                    user.Photo = await _fileStorage.SaveFileAsync(photoUser, ".jpg", _container);
-
-                }
+            {                
 
                 var currentUser = await _userHelper.GetUserAsync(user.Email!);
                 if (currentUser == null)
@@ -132,7 +126,6 @@ namespace CarWashing.API.Controllers
                 currentUser.LastName = user.LastName;
                 currentUser.Address = user.Address;
                 currentUser.PhoneNumber = user.PhoneNumber;
-                currentUser.Photo = !string.IsNullOrEmpty(user.Photo) && user.Photo != currentUser.Photo ? user.Photo : currentUser.Photo;
 
                 var result = await _userHelper.UpdateUserAsync(currentUser);
                 if (result.Succeeded)
@@ -193,13 +186,7 @@ namespace CarWashing.API.Controllers
         [HttpPost("CreateUser")]
         public async Task<ActionResult> CreateUser([FromBody] UserDTO model)
         {
-            User user = model;
-            if (!string.IsNullOrEmpty(model.Photo))
-            {
-                var photoUser = Convert.FromBase64String(model.Photo);
-                model.Photo = await _fileStorage.SaveFileAsync(photoUser, ".jpg", _container);
-
-            }
+            User user = model;            
 
             var result = await _userHelper.AddUserAsync(user, model.Password);
             if (result.Succeeded)
@@ -311,7 +298,6 @@ namespace CarWashing.API.Controllers
                 new Claim("FirstName", user.FirstName),
                 new Claim("LastName", user.LastName),
                 new Claim("Address", user.Address),
-                new Claim("Photo", user.Photo ?? string.Empty),
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["jwtKey"]!));

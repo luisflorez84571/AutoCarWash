@@ -124,17 +124,22 @@
                     Service.Precio = 60000;
                 }
                 precioCalculado = Service.Precio;
+                
             }
             else
             {
                 precioCalculado = 0;
             }
-            <h3>El valor es: @precioCalculado</h3>
+            <h3>El valor es: </h3>
+            <InputSelect class="form-control" @bind-Value="@Service.Vehiculo">
+                <option value="precioCalculado"></option>
+            </InputSelect>
             <button class="btn btn-primary" type="submit">Aceptar y Guardar</button>
             <button class="btn btn-success" @onclick="ReturnAction">Aceptar y Guardar</button>            
             <ValidationMessage For="@(() => precioCalculado)" />
         }       
         
+
     </div>   
     <button class="btn btn-success" @onclick="ReturnAction">Regresar</button>
 </EditForm>

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace CarWashing.API.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialDb : Migration
+    public partial class InicialDB : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

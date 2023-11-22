@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CarWashing.API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20231120233414_InitialDb")]
-    partial class InitialDb
+    [Migration("20231122012536_InicialDB")]
+    partial class InicialDB
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
