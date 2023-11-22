@@ -1,10 +1,14 @@
 ﻿using CarWashing.API.Data;
 using CarWashing.Shared.Entities;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-[Route("/api/employees")]
 [ApiController]
+[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+[Route("/api/employees")]
+
 public class EmployeesController : ControllerBase
 {
     private readonly DataContext _context;

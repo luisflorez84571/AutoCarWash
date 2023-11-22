@@ -2,11 +2,15 @@
 using CarWashing.API.Helpers;
 using CarWashing.Shared.DTOs;
 using CarWashing.Shared.Entities;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-[Route("/api/histories")]
 [ApiController]
+[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+[Route("/api/histories")]
+
 public class HistoriesController : ControllerBase
 {
     private readonly DataContext _context;
