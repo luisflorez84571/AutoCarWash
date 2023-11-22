@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CarWashing.API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20231122024403_InicialDB")]
-    partial class InicialDB
+    [Migration("20231122233113_InitialDB22Nov")]
+    partial class InitialDB22Nov
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -376,6 +376,9 @@ namespace CarWashing.API.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("VehicleId");
+
+                    b.HasIndex("NumeroPlaca")
+                        .IsUnique();
 
                     b.HasIndex("UserId1");
 

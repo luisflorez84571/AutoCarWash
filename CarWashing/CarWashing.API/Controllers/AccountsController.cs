@@ -295,7 +295,7 @@ namespace CarWashing.API.Controllers
                 new Claim("Document", user.Document),
                 new Claim("FirstName", user.FirstName),
                 new Claim("LastName", user.LastName),
-                new Claim("Address", user.Address),
+                new Claim("Address", user.Address!),
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["jwtKey"]!));

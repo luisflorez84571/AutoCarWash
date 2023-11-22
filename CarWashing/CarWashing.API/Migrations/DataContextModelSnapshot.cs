@@ -374,6 +374,9 @@ namespace CarWashing.API.Migrations
 
                     b.HasKey("VehicleId");
 
+                    b.HasIndex("NumeroPlaca")
+                        .IsUnique();
+
                     b.HasIndex("UserId1");
 
                     b.HasIndex("VehicleId1");

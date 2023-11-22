@@ -5,7 +5,11 @@
     <Nullable>disable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
-
+  
+  <PropertyGroup>
+    <ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
+  </PropertyGroup>
+  
   <ItemGroup>
     <PackageReference Include="Antlr4.Runtime" Version="4.6.6" />
     <PackageReference Include="Azure.Identity" Version="1.10.4" />
@@ -25,9 +29,12 @@
     </PackageReference>
     <PackageReference Include="MudBlazor" Version="6.11.0" />
   </ItemGroup>
-
+  
   <ItemGroup>
     <ProjectReference Include="..\CarWashing.Shared\CarWashing.Shared.csproj" />
   </ItemGroup>
-
+  
+  <ItemGroup>
+    <ServiceWorker Include="wwwroot\service-worker.js" publishedContent="wwwroot\service-worker.published.js" />
+  </ItemGroup>
 </Project>

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace CarWashing.API.Migrations
 {
     /// <inheritdoc />
-    public partial class InicialDB : Migration
+    public partial class InitialDB22Nov : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -477,6 +477,12 @@ namespace CarWashing.API.Migrations
                 name: "IX_Services_UserId1",
                 table: "Services",
                 column: "UserId1");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Vehicles_NumeroPlaca",
+                table: "Vehicles",
+                column: "NumeroPlaca",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Vehicles_UserId1",
