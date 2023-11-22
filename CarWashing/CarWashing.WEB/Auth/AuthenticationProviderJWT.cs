@@ -4,6 +4,7 @@ using CarWashing.WEB.Helpers;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http.Headers;
 using System.Security.Claims;
+using CurrieTechnologies.Razor.SweetAlert2;
 
 namespace CarWashing.WEB.Auth
 {
@@ -50,9 +51,27 @@ namespace CarWashing.WEB.Auth
 
         public async Task LoginAsync(string token)
         {
-            await _jSRuntime.SetLocalStorage(_tokenKey, token);
-            var authState = BuildAuthenticationState(token);
-            NotifyAuthenticationStateChanged(Task.FromResult(authState));
+
+                try
+                {
+                    // Verificar si el token es null antes de llamar a ParseClaimsFromJWT
+                    if (!string.IsNullOrEmpty(token))
+                    {
+                        //var claims = authenticationProvider.ParseClaimsFromJWT(token);
+                        await _jSRuntime.SetLocalStorage(_tokenKey, token);
+                        var authState = BuildAuthenticationState(token);
+                        NotifyAuthenticationStateChanged(Task.FromResult(authState));
+                    }
+                    else
+                    {
+                    // Manejar el caso en que el token es null o vacío
+                   
+                    Console.WriteLine("El token es nulo o vacío.");
+                    }
+                }catch (Exception ex)
+                    {
+                        Console.WriteLine($"Error durante el inicio de sesión: {ex.Message}");
+                    }           
         }
 
         public async Task LogoutAsync()

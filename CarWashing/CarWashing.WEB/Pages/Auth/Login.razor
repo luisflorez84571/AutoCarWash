@@ -46,9 +46,10 @@
 @code {
     private LoginDTO loginDTO = new();
 
+    
     private async Task LoginAsync()
     {
-        var responseHttp = await repository.Post<LoginDTO>("/api/accounts/Login", loginDTO);
+        var responseHttp = await repository.Post<LoginDTO, TokenDTO>("/api/accounts/Login", loginDTO);
         if (responseHttp.Error)
         {
             var message = await responseHttp.GetErrorMessageAsync();
@@ -56,7 +57,7 @@
             return;
         }
 
-        await loginService.LoginAsync(responseHttp.Response!.ToString());
+        await loginService.LoginAsync(responseHttp.Response!.Token);
         navigationManager.NavigateTo("/");
     }
 }
